@@ -22,7 +22,7 @@ public interface UserService extends UserDetailsService {
 
     RespVos<UserVo> listUsers(UserSearchVo userSearchVo);
 
-    //RespVos<BraDepUserVo> getBraDepUserTree();
+    RespVos<BraDepUserVo> getBraDepUserTree();
 
     Integer addUser(UserEditVo userEditVo);
 
@@ -32,5 +32,5 @@ public interface UserService extends UserDetailsService {
 
     Integer deleteUsers(DeleteVo deleteVo);
 
-    //UserVo convertToVo(User user);
+    UserVo convertToVo(User user);
 }

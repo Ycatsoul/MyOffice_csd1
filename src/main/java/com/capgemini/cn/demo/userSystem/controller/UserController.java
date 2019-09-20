@@ -54,7 +54,7 @@ public class UserController extends BaseController {
         return RespBean.error("查询失败！");
     }
 
-    /*@ApiOperation("获取机构-部门-用户树")
+    @ApiOperation("获取机构-部门-用户树")
     @GetMapping("/braDepUserTree")
     public RespBean getBraDepUserTree() {
         RespVos<BraDepUserVo> respVos = userService.getBraDepUserTree();
@@ -64,7 +64,7 @@ public class UserController extends BaseController {
         }
 
         return RespBean.error("查询失败！");
-    }*/
+    }
 
     @ControllerLog(name = "添加用户")
     @ApiOperation("添加User")
@@ -75,7 +75,7 @@ public class UserController extends BaseController {
         return res > 0 ? RespBean.ok("添加成功!") : RespBean.error("添加失败!");
     }
 
-    //@ControllerLog(name = "更新用户信息")
+    @ControllerLog(name = "更新用户信息")
     @ApiOperation("更新User信息")
     @PutMapping("/")
     public RespBean updateUser(@RequestBody UserEditVo userEditVo) {
