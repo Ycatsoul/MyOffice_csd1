@@ -2,8 +2,12 @@ package com.capgemini.cn.demo.userSystem.service.impl;
 
 import com.capgemini.cn.demo.baseVo.DeleteVo;
 import com.capgemini.cn.demo.baseVo.RespVos;
+import com.capgemini.cn.demo.userSystem.entity.BranchInfo;
+import com.capgemini.cn.demo.userSystem.entity.DepartInfo;
 import com.capgemini.cn.demo.userSystem.entity.Role;
 import com.capgemini.cn.demo.userSystem.entity.User;
+import com.capgemini.cn.demo.userSystem.mapper.BranchInfoMapper;
+import com.capgemini.cn.demo.userSystem.mapper.DepartMapper;
 import com.capgemini.cn.demo.userSystem.mapper.UserMapper;
 import com.capgemini.cn.demo.userSystem.mapper.UserRoleMapper;
 import com.capgemini.cn.demo.userSystem.service.UserService;
@@ -11,6 +15,7 @@ import com.capgemini.cn.demo.userSystem.vo.request.UserEditVo;
 import com.capgemini.cn.demo.userSystem.vo.request.UserSearchVo;
 import com.capgemini.cn.demo.userSystem.vo.response.BraDepUserVo;
 import com.capgemini.cn.demo.userSystem.vo.response.UserVo;
+import com.capgemini.cn.demo.utils.IdToBeJson;
 import com.capgemini.cn.demo.utils.IdWorker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,10 +41,10 @@ public class UserServiceImpl implements UserService {
     UserMapper userMapper;
     @Autowired
     UserRoleMapper userRoleMapper;
-   /* @Autowired
-    DepartmentMapper departmentMapper;
     @Autowired
-    BranchMapper branchMapper;*/
+    DepartMapper departmentMapper;
+    @Autowired
+    BranchInfoMapper branchMapper;
 
 
     @Override
@@ -69,7 +74,7 @@ public class UserServiceImpl implements UserService {
             RespVos<UserVo> respVos = new RespVos<>();
             respVos.setSize(1);
             respVos.setVos(new ArrayList<UserVo>(){{
-                //add(convertToVo(user));
+                add(convertToVo(user));
             }});
 
             return respVos;
@@ -90,7 +95,7 @@ public class UserServiceImpl implements UserService {
         if (users != null && users.size() > 0) {
             RespVos<UserVo> respVos = new RespVos<>();
             respVos.setSize(userMapper.countUsers(userSearchVo));
-            //respVos.setVos(users.stream().map(this::convertToVo).collect(Collectors.toList()));
+            respVos.setVos(users.stream().map(this::convertToVo).collect(Collectors.toList()));
 
             return respVos;
         }
@@ -98,21 +103,21 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    /*@Override
+    @Override
     public RespVos<BraDepUserVo> getBraDepUserTree() {
-        List<Branch> branches = branchMapper.listBranches(new BranchSearchVo(){{setSize(100);}});
-        List<Department> departments = departmentMapper.listDepartments(new DepartmentSearchVo(){{setSize(200);}});
+        List<BranchInfo> branches = branchMapper.selectAllBranchInfo();
+        List<DepartInfo> departments = departmentMapper.selectAllDepart();
         List<User> users = userMapper.listUsers(new UserSearchVo(){{setSize(1000);}});
         List<BraDepUserVo> braDepUserVos = new ArrayList<>();
         RespVos<BraDepUserVo> respVos = new RespVos<>();
 
-        for (Branch branch : branches) {
+        for (BranchInfo branch : branches) {
             List<BraDepUserVo.Department> convertedDepartments = new ArrayList<>();
-            for (Department department : departments) {
-                if (department.getBranchId().equals(branch.getBranchId())) {
+            for (DepartInfo department : departments) {
+                if (department.getBranchId()==branch.getBranchId()) {
                     List<BraDepUserVo.Department.User> convertedUsers = new ArrayList<>();
                     for (User user : users) {
-                        if (user.getDepartmentId().equals(department.getDepartmentId())) {
+                        if (user.getDepartmentId()==department.getDepartId()) {
                             convertedUsers.add(new BraDepUserVo.Department.User() {{
                                 setUserId(user.getUserId());
                                 setName(user.getName());
@@ -120,14 +125,14 @@ public class UserServiceImpl implements UserService {
                         }
                     }
                     convertedDepartments.add(new BraDepUserVo.Department(){{
-                        setDepartmentId(department.getDepartmentId());
-                        setDepartmentName(department.getDepartmentName());
+                        setDepartmentId(Long.valueOf(department.getDepartId()));
+                        setDepartmentName(department.getDepartName());
                         setUsers(convertedUsers);
                     }});
                 }
             }
             braDepUserVos.add(new BraDepUserVo(){{
-                setBranchId(branch.getBranchId());
+                setBranchId(Long.valueOf(branch.getBranchId()));
                 setBranchShortName(branch.getBranchShortName());
                 setDepartments(convertedDepartments);
             }});
@@ -137,7 +142,7 @@ public class UserServiceImpl implements UserService {
         respVos.setVos(braDepUserVos);
 
         return respVos;
-    }*/
+    }
 
     @Override
     public Integer addUser(UserEditVo userEditVo) {
@@ -182,10 +187,12 @@ public class UserServiceImpl implements UserService {
     /**
      * 将User装换为UserVo
      */
-    /*@Override
+    @Override
     public UserVo convertToVo(User user) {
         UserVo userVo = new UserVo();
-        Department department = departmentMapper.getDepartment(user.getDepartmentId());
+        IdToBeJson id=new IdToBeJson();
+        id.setId(Integer.valueOf(user.getDepartmentId().toString()));
+        DepartInfo department = departmentMapper.getDepartInfoById(id);
         List<Role> roles = userRoleMapper.getRolesByUserId(user.getUserId());
 
         userVo.setUserId(user.getUserId());
@@ -194,10 +201,10 @@ public class UserServiceImpl implements UserService {
         userVo.setGender(user.getGender());
         userVo.setAvatar(user.getAvatar());
         userVo.setDepartmentId(user.getDepartmentId());
-        userVo.setDepartmentName(department == null ? null : department.getDepartmentName());
+        userVo.setDepartmentName(department == null ? null : department.getDepartName());
         userVo.setRoles(roles);
         userVo.setIsBlocked(user.getIsBlocked());
 
         return userVo;
-    }*/
+    }
 }
