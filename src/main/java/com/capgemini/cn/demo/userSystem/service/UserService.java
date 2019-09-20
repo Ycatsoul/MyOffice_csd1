@@ -11,12 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 
-/**
- * @Description:
- * @Classname :
- * @author: GuoBingjun
- * @date:
- */
+
 public interface UserService extends UserDetailsService {
 
     List<Long> getAllUserIds();
