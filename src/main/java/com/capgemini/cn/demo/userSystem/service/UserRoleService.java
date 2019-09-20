@@ -6,10 +6,7 @@ import com.capgemini.cn.demo.userSystem.vo.request.UserRoleEditVo;
 
 import java.util.List;
 
-/**
- * @author hasaker
- * @since 2019/9/8 00:53
- */
+
 public interface UserRoleService {
 
     List<Role> getRolesByUserId(Long userId);
