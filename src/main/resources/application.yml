@@ -100,6 +100,6 @@ spring:
       enabled: false
   datasource:
     url: jdbc:mysql://localhost:3306/myoffice?useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true
-    username: root
-    password: root
+    username: myoffice
+    password: myoffice
 
