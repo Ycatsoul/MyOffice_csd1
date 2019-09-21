@@ -6,10 +6,7 @@ import com.capgemini.cn.demo.userSystem.entity.Menu;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author hasaker
- * @since 2019/9/8 11:02
- */
+
 public interface MenuService {
 
     Menu getMenuByMenuId(Long menuId);
