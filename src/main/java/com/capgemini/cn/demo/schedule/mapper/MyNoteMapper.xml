@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capgemini.cn.demo.schedule.mapper.MyNoteMapper">
+
+	<select id="selectAllMyNote" resultType="com.capgemini.cn.demo.schedule.bean.MyNote">
+		select * from mynote where createUser = #{username}
+	</select>
+	<insert id="insertMyNote">
+		insert into mynote(noteTitle,noteContent,createTime,createUser) values(#{noteTitle},#{noteContent},#{createTime},#{createUser}) 
+	</insert>
+	<delete id="deleteMyNoteById">
+		delete from mynote where noteId=#{id}
+	</delete>
+	<update id="updateMyNoteById">
+		update mynote set noteTitle=#{noteTitle},noteContent=#{noteContent} where noteId=#{noteId}
+	</update>
+</mapper>

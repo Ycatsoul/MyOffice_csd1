@@ -37,7 +37,7 @@ public class BranchInfoServiceImpl implements BranchInfoService {
 	}
 
 	@Override
-	public int selectBranchInfoIdByName(String name) {
+	public long selectBranchInfoIdByName(String name) {
 		return mapper.selectBranchInfoIdByName(name);
 	}
 
