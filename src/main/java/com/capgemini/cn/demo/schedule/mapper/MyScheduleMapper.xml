@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capgemini.cn.demo.schedule.mapper.MyScheduleMapper">
+	
+	<insert id="insertSchedule" >
+		<selectKey keyProperty="scheduleId" order="AFTER" resultType="java.lang.Integer">
+			select LAST_INSERT_ID()
+		</selectKey>
+		insert into schedule(scheduleId,title,address,meetingId,beginTime,endTime,schContent,createUser,createTime,ifPrivate) values(#{scheduleId},#{title},#{address},#{meetingId},#{beginTime},#{endTime},#{schContent},#{createUser},#{createTime},#{ifPrivate})
+	</insert>
+	<select id="selectUserIdByUserName" resultType="String">
+		select userId from user where userName=#{userName}
+	</select>
+	<insert id="insertPrecontract">
+		insert into precontract(scheduleId,userId) values(#{scheduleId},#{userId})
+	</insert>
+	
+	<update id="updateScheduleById">
+		update schedule set title=#{title},address=#{address},meetingId=#{meetingId},beginTime=#{beginTime},endTime=#{endTime},schContent=#{schContent} where scheduleId=#{scheduleId}
+	</update>
+	<update id="updatePrecontractById">
+		update precontract set userId=#{userId} where scheduleId=#{scheduleId}
+	</update>
+	<delete id="deleteScheduleById">
+		delete from schedule where scheduleId=#{id}
+	</delete>
+	<delete id="deletePrecontractByscheduleId">
+		delete from precontract where scheduleId=#{id}
+	</delete>
+	<select id="selectScheduleByDate" resultType="com.capgemini.cn.demo.schedule.bean.Schedule">
+		select * from schedule where SUBSTRING(beginTime,1,10) like concat('%',#{subDate},'%') and createUser=#{createUser}
+	</select>
+	
+</mapper>
