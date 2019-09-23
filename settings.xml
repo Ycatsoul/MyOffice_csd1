@@ -52,7 +52,7 @@ under the License.
    | Default: ${user.home}/.m2/mapper
   <localRepository>/path/to/local/repo</localRepository>
   -->
-  <localRepository>D:\Program Files\Apache\maven\maven-repository</localRepository>
+  <localRepository>G:\mavens\repository</localRepository>
 
   <!-- interactiveMode
    | This will determine whether maven prompts you when it needs input. If set to false,

@@ -31,7 +31,7 @@ public class DepartmentController {
 	@PutMapping("/addDepart")
 	@ApiOperation(value = "添加部门")
 	public RespBean addDepart(@Valid @RequestBody DepartInfo departInfo) {
-		int branchId=0;
+		long branchId=0;
 		try{
 			//根据机构名称查找机构Id
 			branchId = branchInfoService.selectBranchInfoIdByName(departInfo.getBranchName());
@@ -48,7 +48,7 @@ public class DepartmentController {
 	@PutMapping("/modifyDepartById")
 	@ApiOperation(value = "根据id修改部门")
 	public RespBean modifyDepartById(@Valid @RequestBody DepartInfo departInfo) {
-		int branchId=0;
+		long branchId= 0L;
 		try{
 			//根据机构名称查找机构Id
 			branchId = branchInfoService.selectBranchInfoIdByName(departInfo.getBranchName());

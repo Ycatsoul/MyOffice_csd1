@@ -15,5 +15,5 @@ public interface BranchInfoMapper {
 	void updateBranchInfo(BranchInfo branchInfo);
 	void deleteBranchInfoById(IdToBeJson branchId);
 	
-	int selectBranchInfoIdByName(String name);
+	long selectBranchInfoIdByName(String name);
 }

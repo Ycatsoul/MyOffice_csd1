@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class BranchInfo {
 	
-	private int branchId;
+	private long branchId;
 	
 	private String branchName;
 	
