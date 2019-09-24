@@ -125,14 +125,14 @@ public class UserServiceImpl implements UserService {
                         }
                     }
                     convertedDepartments.add(new BraDepUserVo.Department(){{
-                        setDepartmentId(Long.valueOf(department.getDepartId()));
+                        setDepartmentId(department.getDepartId());
                         setDepartmentName(department.getDepartName());
                         setUsers(convertedUsers);
                     }});
                 }
             }
             braDepUserVos.add(new BraDepUserVo(){{
-                setBranchId(Long.valueOf(branch.getBranchId()));
+                setBranchId(branch.getBranchId());
                 setBranchShortName(branch.getBranchShortName());
                 setDepartments(convertedDepartments);
             }});
@@ -191,7 +191,7 @@ public class UserServiceImpl implements UserService {
     public UserVo convertToVo(User user) {
         UserVo userVo = new UserVo();
         IdToBeJson id=new IdToBeJson();
-        id.setId(Integer.valueOf(user.getDepartmentId().toString()));
+        id.setId(Long.valueOf(user.getDepartmentId().toString()));
         DepartInfo department = departmentMapper.getDepartInfoById(id);
         List<Role> roles = userRoleMapper.getRolesByUserId(user.getUserId());
 
