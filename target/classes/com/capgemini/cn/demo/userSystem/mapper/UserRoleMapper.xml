@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.capgemini.cn.demo.userSystem.mapper.UserRoleMapper">
+  
+  <!-- 根据userId获取Role -->
+  <select id="getRolesByUserId" resultType="com.capgemini.cn.demo.userSystem.entity.Role">
+    SELECT * FROM Role WHERE roleId IN (SELECT roleId FROM UserRole WHERE userId = #{userId})
+  </select>
+  
+  <!-- 添加UserRole -->
+  <insert id="addUserRole">
+    INSERT INTO UserRole (userRoleId, userId, roleId)
+    VALUES (#{userRoleId}, #{userId}, #{roleId})
+  </insert>
+  
+  <!-- 根据userRoleId删除UserRole -->
+  <delete id="deleteUserRoleByUserRoleId" parameterType="Long">
+    DELETE FROM UserRole WHERE userRoleId = #{userRoleId}
+  </delete>
+  
+  <!-- 根据userId和roleId删除userRole -->
+  <delete id="deleteUserRoleByUserIdAndRoleId">
+    DELETE FROM UserRole WHERE userId = #{userId} AND roleId = #{roleId}
+  </delete>
+  
+  <!-- 根据userId删除userRole -->
+  <delete id="deleteUserRolesByUserId" parameterType="Long">
+    DELETE FROM UserRole WHERE userId = #{userId}
+  </delete>
+  
+</mapper>
