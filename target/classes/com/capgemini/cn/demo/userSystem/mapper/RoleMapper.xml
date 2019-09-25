@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.capgemini.cn.demo.userSystem.mapper.RoleMapper">
+  
+  <!-- 根据roleId获取角色 -->
+  <select id="getRoleByRoleId" resultType="com.capgemini.cn.demo.userSystem.entity.Role">
+    SELECT * FROM Role WHERE roleId = #{roleId}
+  </select>
+  
+  <!-- 根据roleName获取角色 -->
+  <select id="getRoleByRoleName" resultType="com.capgemini.cn.demo.userSystem.entity.Role">
+    SELECT * FROM Role WHERE roleName = #{roleName}
+  </select>
+  
+  <!-- 获取角色列表 -->
+  <select id="getRoles" resultType="com.capgemini.cn.demo.userSystem.entity.Role">
+    SELECT * FROM Role;
+  </select>
+  
+  <!-- 添加一个角色 -->
+  <insert id="addRole" parameterType="com.capgemini.cn.demo.userSystem.vo.request.RoleEditVo">
+    INSERT INTO Role (roleId, roleName, roleDesc)
+    VALUES (#{roleEditVo.roleId}, #{roleEditVo.roleName}, #{roleEditVo.roleDesc})
+  </insert>
+  
+  <!-- 修改一个角色 -->
+  <insert id="updateRole" parameterType="com.capgemini.cn.demo.userSystem.vo.request.RoleEditVo">
+    UPDATE Role
+    SET roleName = #{roleEditVo.roleName},
+        roleDesc = #{roleEditVo.roleDesc}
+    WHERE roleId = #{roleEditVo.roleId}
+  </insert>
+  
+  <!-- 删除一个角色 -->
+  <delete id="deleteRole" parameterType="com.capgemini.cn.demo.baseVo.DeleteVo">
+    DELETE FROM Role WHERE roleId IN
+        <foreach collection="deleteVo.ids" item="id" separator="," open="(" close=")">
+          #{id}
+        </foreach>
+  </delete>
+  
+</mapper>

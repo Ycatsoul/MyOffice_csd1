@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.capgemini.cn.demo.userSystem.mapper.MenuRoleMapper">
+  
+  <!-- 根据menuId获取Role -->
+  <select id="getRolesByMenuId" resultType="com.capgemini.cn.demo.userSystem.entity.Role">
+    SELECT * FROM Role WHERE roleId IN (SELECT roleId FROM MenuRole WHERE menuId = #{menuId})
+  </select>
+  
+  <!-- 添加MenuRole -->
+  <insert id="addMenuRole">
+    INSERT INTO MenuRole (menuRoleId, menuId, roleId)
+    VALUES (#{menuRoleId}, #{menuId}, #{roleId})
+  </insert>
+
+</mapper>

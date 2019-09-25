@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.capgemini.cn.demo.userSystem.mapper.MenuMapper">
+  
+  <!-- 根据menuId获取Menu -->
+  <select id="getMenuByMenuId" parameterType="Long" resultType="com.capgemini.cn.demo.userSystem.entity.Menu">
+    SELECT * FROM Menu WHERE menuId = #{menuId}
+  </select>
+  
+  <!-- 根据menuName获取Menu -->
+  <select id="getMenuByMenuName" parameterType="String" resultType="com.capgemini.cn.demo.userSystem.entity.Menu">
+    SELECT * FROM Menu WHERE menuName = #{menuName}
+  </select>
+  
+  <!-- 添加Menu -->
+  <insert id="addMenu" parameterType="com.capgemini.cn.demo.userSystem.entity.Menu">
+    INSERT INTO Menu (menuId, menuUrl, menuPath, menuComponent, menuName, parentMenuId)
+    VALUES (#{menu.menuId}, #{menu.menuUrl}, #{menu.menuPath}, #{menu.menuComponent}, #{menu.menuName}, #{menu.parentMenuId})
+  </insert>
+  
+  <!-- 获取所有Menu -->
+  <select id="getAllMenus" resultType="com.capgemini.cn.demo.userSystem.entity.Menu">
+    SELECT * FROM Menu
+  </select>
+
+</mapper>
