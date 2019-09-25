@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capgemini.cn.demo.userSystem.mapper.MessageMapper">
+
+    <select id="selectMessageList" parameterType="com.capgemini.cn.demo.userSystem.vo.request.MessageReq"
+                                   resultType ="com.capgemini.cn.demo.userSystem.vo.response.MessageResp">
+        select a.messageId,a.title,c.messageTypeName,a.content,b.username,a.ifAll,a.beginTime,a.endTime,a.recordTime
+        from message a, user b, messagetype c
+        where a.ifDelete = 0 and a.fromUserId = b.userId and a.type = c.messageTypeId
+        <if test="messageReq.beginTime != null and messageReq.endTime != null">
+            and beginTime between #{messageReq.beginTime} and #{messageReq.endTime}
+            and (endTime between #{messageReq.beginTime} and #{messageReq.endTime})
+        </if>
+    </select>
+
+    <select id="selectMessageByDay" parameterType="com.capgemini.cn.demo.userSystem.vo.request.MessageReq"
+                                    resultType="com.capgemini.cn.demo.userSystem.vo.response.MessageResp">
+        select a.messageId,a.title,a.type,a.content,b.username,a.ifAll,a.beginTime,a.endTime,a.recordTime
+        from message a, user b
+        where a.fromUserId = b.userId and a.ifDelete = 0 and to_days(a.recordTime) = to_days(now())
+    </select>
+
+    <select id="selectMessageByWeek" parameterType="com.capgemini.cn.demo.userSystem.vo.request.MessageReq"
+                                     resultType="com.capgemini.cn.demo.userSystem.vo.response.MessageResp">
+        select a.messageId,a.title,a.type,a.content,b.username,a.ifAll,a.beginTime,a.endTime,a.recordTime
+        from message a, user b
+        where a.fromUserId = b.userId and a.ifDelete = 0 and YEARWEEK(date_format(a.recordTime,'%Y-%m-%d')) = YEARWEEK(now())
+    </select>
+
+    <select id="selectMessageByMonth" parameterType="com.capgemini.cn.demo.userSystem.vo.request.MessageReq"
+                                      resultType="com.capgemini.cn.demo.userSystem.vo.response.MessageResp">
+        select a.messageId,a.title,a.type,a.content,b.username,a.ifAll,a.beginTime,a.endTime,a.recordTime
+        from message a, user b
+        where a.fromUserId = b.userId and a.ifDelete = 0 and DATE_FORMAT(a.recordTime,'%Y%m') = DATE_FORMAT( CURDATE( ),'%Y%m')
+    </select>
+    
+    <select id="getIfPublishById" resultType="Integer" parameterType="Integer">
+        select ifPublish
+        from message
+        where messageId = #{messageId}
+    </select>
+
+    <update id="publishMessage" parameterType="com.capgemini.cn.demo.userSystem.entity.Message">
+        update message
+        <set>
+            ifPublish = 1,
+            recordTime = now()
+        </set>
+        where messageId = #{messagePublish.messageId} and ifPublish = 0
+    </update>
+    
+    <select id="getUserIdByMessageId" resultType="Long" parameterType="Integer">
+        select touserId
+        from messagetouser
+        where messageId = #{messageId}
+    </select>
+
+    <insert id="insertReadCommonMessage" parameterType="com.capgemini.cn.demo.userSystem.entity.ReadCommonMessage">
+        insert into readcommonmessage
+        (
+        messageId,userId
+        )
+        values
+        <foreach collection="readCommonMessages" item="readCommonMessage" separator=",">
+            (
+            #{readCommonMessage.messageId},
+            #{readCommonMessage.userId}
+            )
+        </foreach>
+    </insert>
+
+    <select id="count" resultType="Long"
+                       parameterType="com.capgemini.cn.demo.userSystem.vo.request.MessageReq">
+        select count(*)
+        from message
+        where ifDelete = 0
+    </select>
+
+    <update id="deleteMessageById" parameterType="com.capgemini.cn.demo.userSystem.vo.request.MessageDeleteReq">
+        update message
+        set ifDelete = 1
+        where messageId in(
+        <foreach collection="messageDeleteReq.messageIds" item="messageId" separator=",">
+            #{messageId}
+        </foreach>
+        )
+    </update>
+
+    <insert id="insertMessage" parameterType="com.capgemini.cn.demo.userSystem.entity.Message">
+        insert into message
+        (
+        title,beginTime,endTime,type,content,fromUserId,ifPublish,ifDelete,updateTime,updateUserId,ifAll,recordTime
+        )
+        values
+            (
+            #{message.title},
+            #{message.beginTime},
+            #{message.endTime},
+            #{message.type},
+            #{message.content},
+            #{message.fromUserId},
+            0,
+            0,
+            now(),
+            #{message.fromUserId},
+            #{message.ifAll},
+            now()
+            )
+    </insert>
+
+    <insert id="insertToUser" parameterType="com.capgemini.cn.demo.userSystem.entity.MessageToUser">
+        insert into messagetouser
+        (
+        messageId,
+        touserId,
+        ifRead
+        )
+        values
+            (
+            #{messageToUser.messageId},
+            #{messageToUser.touserId},
+            0
+            )
+    </insert>
+
+    <select id="getIdByTypeName" resultType="Integer"
+                                 parameterType="String">
+        select messageTypeId
+        from messagetype
+        where messageTypeName = #{typeName}
+    </select>
+
+    <select id="searchMessageId" resultType="Integer">
+          select messageId
+          from message
+          order by messageId desc
+          limit 1
+    </select>
+
+    <update id="updateAllSend" parameterType="INTEGER">
+        update message
+        <set>
+            ifAll = 1
+        </set>
+        where messageId = #{messageId}
+    </update>
+
+    <update id="updateMessage" parameterType="com.capgemini.cn.demo.userSystem.entity.Message">
+        update message
+        <set>
+            <if test="messageEdit.title != null">
+                title = #{messageEdit.title},
+            </if>
+            <if test="messageEdit.type != null">
+                type = #{messageEdit.type},
+            </if>
+            <if test="messageEdit.content != null">
+                content = #{messageEdit.content},
+            </if>
+            <if test="messageEdit.beginTime != null">
+                beginTime = #{messageEdit.beginTime},
+            </if>
+            <if test="messageEdit.endTime != null">
+                endTime = #{messageEdit.endTime},
+            </if>
+        </set>
+        where messageId = #{messageEdit.messageId}
+    </update>
+
+    <select id="selectBranchList" resultType="com.capgemini.cn.demo.userSystem.vo.response.BranchResp"
+                                  parameterType="com.capgemini.cn.demo.userSystem.vo.request.BranchDepReq">
+        select branchId, branchName
+        from branchinfo
+    </select>
+
+    <select id="selectDepartList" resultType="com.capgemini.cn.demo.userSystem.vo.response.DepartResp"
+            parameterType="com.capgemini.cn.demo.userSystem.vo.request.BranchDepReq">
+        select departId, departName
+        from departInfo
+    </select>
+
+    <select id="selectUserList" resultType="com.capgemini.cn.demo.userSystem.vo.response.UserResp"
+            parameterType="com.capgemini.cn.demo.userSystem.vo.request.BranchDepReq">
+        select userId, name
+        from user
+    </select>
+
+</mapper>

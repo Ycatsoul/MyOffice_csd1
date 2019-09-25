@@ -29,7 +29,7 @@
     <select id="getAllUserIds" resultType="Long">
         SELECT userId FROM User;
     </select>
-    
+
     <!-- 根据userId查询User -->
     <select id="getUser" resultType="com.capgemini.cn.demo.userSystem.entity.User">
         SELECT * FROM User WHERE userId = #{userId};
