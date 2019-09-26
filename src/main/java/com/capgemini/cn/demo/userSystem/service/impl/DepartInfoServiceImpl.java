@@ -48,37 +48,6 @@ public class DepartInfoServiceImpl implements DepartService {
 		return mapper.selectAllDepartByBranchId(id);
 	}
 
-	@Override
-	public RespVos<DepartmentVo> getDepartment(Long departmentId) {
-		DepartInfo departInfo = DepartInfo.getDepartment(departmentId);
-
-		if (departInfo != null) {
-			RespVos<DepartmentVo> respVos = new RespVos<>();
-			respVos.setSize(1);
-			respVos.setVos(new ArrayList<DepartmentVo>(){{
-				insertDepart(departInfo);
-			}});
-
-			return respVos;-
-	}
-
-	@Override
-	public getDepartment(Long departmentId) {
-		DepartInfo departInfo = DepartInfo.getDepartment(departmentId);
-
-		if (departInfo != null) {
-			RespVos<DepartmentVo> respVos = new RespVos<>();
-			respVos.setSize(1);
-			respVos.setVos(new ArrayList<DepartmentVo>(){{
-				insertDepart(departInfo);
-			}});
-
-			return respVos;
-		}
-
-		return null;
-	}
-
 
 
 }

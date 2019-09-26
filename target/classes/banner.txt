@@ -1,0 +1,16 @@
+${AnsiColor.AnsiBackground.GREEN} ┏┓ ┏┓
+ ┏┛┻━━━┛┻┓
+ ┃ ┃
+ ┃ ━ ┃
+ ┃ ┳┛ ┗┳ ┃
+ ┃ ┃
+ ┃ ┻ ┃
+ ┃ ┃
+ ┗━┓ ┏━┛
+ ┃ ┃
+ ┃ ┃ Town building god beast
+ ┃ ┗━━━┓
+ ┃ ┣┓
+ ┃ ┏┛
+ ┗┓┓┏━┳┓┏┛
+${AnsiColor.AnsiBackground.GREEN}>>>>>>>>>>>>WYQ says bug free forever<<<<<<<<<<<<
