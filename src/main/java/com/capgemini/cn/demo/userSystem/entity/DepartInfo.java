@@ -5,12 +5,12 @@ import lombok.Data;
 @Data
 public class DepartInfo {
 	
-	private int departId;
+	private Long departId;
 	private String departName;
 	private String principalUser;
-	private long connectTelNo;
-	private long connectMobileTelNo;
-	private int faxes;
-	private int branchId;
+	private Long connectTelNo;
+	private Long connectMobileTelNo;
+	private Long faxes;
+	private Long branchId;
 	private String branchName;
 }

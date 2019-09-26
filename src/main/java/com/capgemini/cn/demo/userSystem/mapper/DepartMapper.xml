@@ -4,18 +4,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.capgemini.cn.demo.userSystem.mapper.DepartMapper">
 
-    <select id="getDepartInfoById" resultType="com.capgemini.cn.demo.userSystem.entity.DepartInfo">
-		select departinfo.*,branchinfo.branchname from departinfo,branchinfo where departinfo.branchid=branchinfo.branchid and departId=#{id}
-	</select>
-
-    <select id="selectAllDepart" resultType="com.capgemini.cn.demo.userSystem.entity.DepartInfo">
+	<select id="selectAllDepart" resultType="com.capgemini.cn.demo.userSystem.entity.DepartInfo">
 		select departinfo.*,branchinfo.branchname from departinfo,branchinfo where departinfo.branchid=branchinfo.branchid
 	</select>
-	
+
 	<insert id="insertDepart">
 		insert into departinfo(departName,principalUser,connectTelNo,connectMobileTelNo,faxes,branchId) values(#{departName},#{principalUser},#{connectTelNo},#{connectMobileTelNo},#{faxes},#{branchId})
 	</insert>
-	
+
 	<update id="updateDepart">
 		update departinfo set departName=#{departName},principalUser=#{principalUser},connectTelNo=#{connectTelNo},connectMobileTelNo=#{connectMobileTelNo},faxes=#{faxes},branchId=#{branchId} where departId=#{departId}
 	</update>
@@ -28,6 +24,11 @@
 	<select id="selectAllDepartByBranchId" resultType="com.capgemini.cn.demo.userSystem.entity.DepartInfo">
 		select departinfo.*,branchinfo.branchname from departinfo,branchinfo where departinfo.branchid=branchinfo.branchid and departinfo.branchid=#{id}
 	</select>
+
+	<!-- 根据departmentId获取Department -->
+	<select id="getDepartment" resultType="com.capgemini.cn.demo.userSystem.entity.DepartInfo">
+        SELECT * FROM Department WHERE departmentId = #{departmentId}
+    </select>
 	
 	
 </mapper>

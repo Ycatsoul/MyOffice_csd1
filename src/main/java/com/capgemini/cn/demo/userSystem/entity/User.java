@@ -11,12 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * @Description:员工信息实体类
- * @Classname :User
- * @author: GuoBingjun
- * @date:2019-8-21 15:27
- */
+
 @Data
 public class User implements UserDetails {
     /**

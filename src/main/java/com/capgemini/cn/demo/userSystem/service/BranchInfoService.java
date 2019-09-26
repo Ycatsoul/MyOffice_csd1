@@ -13,8 +13,9 @@ public interface BranchInfoService {
 	void insertBranchInfo(BranchInfo branchInfo);
 	void updateBranchInfo(BranchInfo branchInfo);
 	void deleteBranchInfoById(IdToBeJson branchId);
-	
+
 	int selectBranchInfoIdByName(String name);
+
 
 
 }

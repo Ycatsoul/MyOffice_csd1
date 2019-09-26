@@ -3,6 +3,7 @@ package com.capgemini.cn.demo.userSystem.mapper;
 import com.capgemini.cn.demo.userSystem.entity.BranchInfo;
 import com.capgemini.cn.demo.utils.IdToBeJson;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -10,10 +11,12 @@ import java.util.List;
 @Repository
 @Mapper
 public interface BranchInfoMapper {
+
 	List<BranchInfo>  selectAllBranchInfo();
 	void insertBranchInfo(BranchInfo branchInfo);
 	void updateBranchInfo(BranchInfo branchInfo);
 	void deleteBranchInfoById(IdToBeJson branchId);
-	
 	int selectBranchInfoIdByName(String name);
+
+	BranchInfo getBranch(@Param("branchId") Long branchId);
 }

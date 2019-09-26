@@ -1,22 +1,25 @@
 package com.capgemini.cn.demo.userSystem.service.impl;
 
+import com.capgemini.cn.demo.baseVo.RespVos;
 import com.capgemini.cn.demo.userSystem.entity.DepartInfo;
 import com.capgemini.cn.demo.userSystem.mapper.DepartMapper;
 import com.capgemini.cn.demo.userSystem.service.DepartService;
+import com.capgemini.cn.demo.userSystem.vo.response.DepartmentVo;
 import com.capgemini.cn.demo.utils.IdToBeJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class DepartInfoServiceImpl implements DepartService {
-	
+
 	@Autowired
 	DepartMapper mapper;
 	@Override
 	public List<DepartInfo> selectAllDepart() {
-		
+
 		return mapper.selectAllDepart();
 	}
 
@@ -45,5 +48,37 @@ public class DepartInfoServiceImpl implements DepartService {
 		return mapper.selectAllDepartByBranchId(id);
 	}
 
-	
+	@Override
+	public RespVos<DepartmentVo> getDepartment(Long departmentId) {
+		DepartInfo departInfo = DepartInfo.getDepartment(departmentId);
+
+		if (departInfo != null) {
+			RespVos<DepartmentVo> respVos = new RespVos<>();
+			respVos.setSize(1);
+			respVos.setVos(new ArrayList<DepartmentVo>(){{
+				insertDepart(departInfo);
+			}});
+
+			return respVos;-
+	}
+
+	@Override
+	public getDepartment(Long departmentId) {
+		DepartInfo departInfo = DepartInfo.getDepartment(departmentId);
+
+		if (departInfo != null) {
+			RespVos<DepartmentVo> respVos = new RespVos<>();
+			respVos.setSize(1);
+			respVos.setVos(new ArrayList<DepartmentVo>(){{
+				insertDepart(departInfo);
+			}});
+
+			return respVos;
+		}
+
+		return null;
+	}
+
+
+
 }

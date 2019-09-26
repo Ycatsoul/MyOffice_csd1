@@ -11,10 +11,10 @@ import java.util.List;
 
 @Service
 public class BranchInfoServiceImpl implements BranchInfoService {
-	
+
 	@Autowired
 	BranchInfoMapper mapper;
-	
+
 	@Override
 	public List<BranchInfo> selectAllBranchInfo() {
 		return mapper.selectAllBranchInfo();
@@ -32,7 +32,7 @@ public class BranchInfoServiceImpl implements BranchInfoService {
 
 	@Override
 	public void deleteBranchInfoById(IdToBeJson branchId) {
-		
+
 		mapper.deleteBranchInfoById(branchId);
 	}
 
