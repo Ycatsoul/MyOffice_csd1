@@ -10,6 +10,7 @@ import com.capgemini.cn.demo.userSystem.vo.request.ManualSignSearchVo;
 import com.capgemini.cn.demo.userSystem.vo.response.ManualSignVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -22,11 +23,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/manualSignAdmin")
 public class ManualSignAdminController {
-    private final ManualSignService manualSignService;
+    @Autowired
+    ManualSignService manualSignService;
 
-    public ManualSignAdminController(ManualSignService manualSignService) {
-        this.manualSignService = manualSignService;
-    }
 
     @ApiOperation("获取签到详尽信息")
     @GetMapping("/{manualSignId}")

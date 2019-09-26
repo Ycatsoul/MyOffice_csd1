@@ -32,14 +32,14 @@
     </sql>
 
     <!-- 根据manualSignId获取ManualSign -->
-    <select id="getManualSign" resultType="com.capgemini.cn.deemo.data.domain.ManualSign">
+    <select id="getManualSign" resultType="com.capgemini.cn.demo.userSystem.entity.ManualSign">
         SELECT * FROM ManualSign WHERE manualSignId = #{manualSignId}
     </select>
 
     <!-- 获取ManualSign列表 -->
     <select id="listManualSigns"
-            parameterType="com.capgemini.cn.deemo.vo.request.ManualSignSearchVo"
-            resultType="com.capgemini.cn.deemo.data.domain.ManualSign">
+            parameterType="com.capgemini.cn.demo.userSystem.vo.request.ManualSignSearchVo"
+            resultType="com.capgemini.cn.demo.userSystem.entity.ManualSign">
         SELECT *
         FROM ManualSign
         <where><include refid="search" /></where>
@@ -48,8 +48,8 @@
 
     <!-- 统计ManualSign列表长度 -->
     <select id="countManualSigns"
-            resultType="Integer"
-            parameterType="com.capgemini.cn.deemo.vo.request.ManualSignSearchVo">
+            resultType="INTEGER"
+            parameterType="com.capgemini.cn.demo.userSystem.vo.request.ManualSignSearchVo">
         SELECT count(1)
         FROM ManualSign
         <where><include refid="search" /></where>
@@ -57,7 +57,7 @@
 
 
     <!-- 插入一条ManualSign记录 -->
-    <insert id="insertManualSign" parameterType="com.capgemini.cn.deemo.vo.request.ManualSignEditVo">
+    <insert id="insertManualSign" parameterType="com.capgemini.cn.demo.userSystem.vo.request.ManualSignEditVo">
         INSERT INTO ManualSign
             (
              manualSignId,
@@ -75,7 +75,7 @@
     </insert>
 
     <!-- 更新一条ManualSign记录 -->
-    <update id="updateManualSign" parameterType="com.capgemini.cn.deemo.vo.request.ManualSignEditVo">
+    <update id="updateManualSign" parameterType="com.capgemini.cn.demo.userSystem.vo.request.ManualSignEditVo">
         UPDATE ManualSign
         SET userId = #{manualSignEditVo.userId},
             signDesc = #{manualSignEditVo.signDesc},
@@ -91,9 +91,5 @@
         </foreach>
     </delete>
 
-    <!-- 根据manualSignId获取ManualSign -->
-    <select id="getManualSign" resultType="com.capgemini.cn.deemo.data.domain.ManualSign">
-        SELECT * FROM ManualSign WHERE manualSignId = #{manualSignId}
-    </select>
 
 </mapper>

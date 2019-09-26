@@ -1,8 +1,10 @@
 package com.capgemini.cn.demo.userSystem.service.impl;
 
+import com.capgemini.cn.demo.baseVo.RespVos;
 import com.capgemini.cn.demo.userSystem.entity.BranchInfo;
 import com.capgemini.cn.demo.userSystem.mapper.BranchInfoMapper;
 import com.capgemini.cn.demo.userSystem.service.BranchInfoService;
+import com.capgemini.cn.demo.userSystem.vo.response.BranchVo;
 import com.capgemini.cn.demo.utils.IdToBeJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,8 +39,13 @@ public class BranchInfoServiceImpl implements BranchInfoService {
 	}
 
 	@Override
-	public int selectBranchInfoIdByName(String name) {
+	public Long selectBranchInfoIdByName(String name) {
 		return mapper.selectBranchInfoIdByName(name);
+	}
+
+	@Override
+	public RespVos<BranchVo> getBranch(Long branchId) {
+		return null;
 	}
 
 }

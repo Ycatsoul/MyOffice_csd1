@@ -6,6 +6,7 @@ import com.capgemini.cn.demo.userSystem.service.MenuRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ import java.util.List;
 @Service
 public class MenuRoleServiceImpl implements MenuRoleService {
 
-    @Autowired
+    @Resource
     MenuRoleMapper menuRoleMapper;
 
 

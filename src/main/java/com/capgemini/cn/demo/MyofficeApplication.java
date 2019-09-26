@@ -1,6 +1,7 @@
 package com.capgemini.cn.demo;
 
 import com.capgemini.cn.core.commons.BaseBootApplication;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -10,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author Andriy
  */
 @SpringBootApplication
+@MapperScan("com.capgemini.cn.demo.**")
 public class MyofficeApplication extends BaseBootApplication {
 
     public static void main(String[] args) {

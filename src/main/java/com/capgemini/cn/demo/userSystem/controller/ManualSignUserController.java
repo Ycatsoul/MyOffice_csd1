@@ -7,6 +7,7 @@ import com.capgemini.cn.demo.userSystem.vo.request.ManualSignEditVo;
 import com.capgemini.cn.demo.userSystem.vo.response.ManualSignVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,11 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/manualSignUser")
 public class ManualSignUserController {
 
-    private final ManualSignService manualSignService;
+    @Autowired
+    ManualSignService manualSignService;
 
-    public ManualSignUserController(ManualSignService manualSignService) {
-        this.manualSignService = manualSignService;
-    }
 
     @ControllerLog(name = "签到")
     @ApiOperation("添加一个签到")

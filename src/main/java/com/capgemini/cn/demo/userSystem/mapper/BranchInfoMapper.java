@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+
 import java.util.List;
 
 @Repository
@@ -16,7 +17,7 @@ public interface BranchInfoMapper {
 	void insertBranchInfo(BranchInfo branchInfo);
 	void updateBranchInfo(BranchInfo branchInfo);
 	void deleteBranchInfoById(IdToBeJson branchId);
-	int selectBranchInfoIdByName(String name);
+	Long selectBranchInfoIdByName(String name);
 
 	BranchInfo getBranch(@Param("branchId") Long branchId);
 }

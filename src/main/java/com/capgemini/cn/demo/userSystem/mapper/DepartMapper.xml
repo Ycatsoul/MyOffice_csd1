@@ -29,6 +29,7 @@
 	<select id="getDepartment" resultType="com.capgemini.cn.demo.userSystem.entity.DepartInfo">
         SELECT * FROM Department WHERE departmentId = #{departmentId}
     </select>
+
 	
 	
 </mapper>

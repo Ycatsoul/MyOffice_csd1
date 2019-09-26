@@ -192,7 +192,7 @@ public class UserServiceImpl implements UserService {
         UserVo userVo = new UserVo();
         IdToBeJson id=new IdToBeJson();
         id.setId(Integer.valueOf(user.getDepartmentId().toString()));
-        DepartInfo department = departmentMapper.getDepartment(id);
+        DepartInfo department = departmentMapper.getDepartment(user.getDepartmentId());
         List<Role> roles = userRoleMapper.getRolesByUserId(user.getUserId());
 
         userVo.setUserId(user.getUserId());

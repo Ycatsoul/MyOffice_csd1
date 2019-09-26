@@ -1,7 +1,5 @@
 package com.capgemini.cn.demo.userSystem.mapper;
 import com.capgemini.cn.demo.userSystem.entity.DepartInfo;
-import com.capgemini.cn.demo.userSystem.vo.request.DepartmentEditVo;
-import com.capgemini.cn.demo.userSystem.vo.request.DepartmentSearchVo;
 import com.capgemini.cn.demo.utils.IdToBeJson;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

@@ -5,6 +5,7 @@ import com.capgemini.cn.demo.baseVo.RespVos;
 import com.capgemini.cn.demo.userSystem.vo.request.ManualSignEditVo;
 import com.capgemini.cn.demo.userSystem.vo.request.ManualSignSearchVo;
 import com.capgemini.cn.demo.userSystem.vo.response.ManualSignVo;
+import org.springframework.stereotype.Service;
 
 /**
  * @author WYQ
