@@ -22,4 +22,6 @@ public class AccessoryFileAddVo {
     private Date createDate;
 
     private String accessoryPath;
+
+    private Long createUserId;
 }

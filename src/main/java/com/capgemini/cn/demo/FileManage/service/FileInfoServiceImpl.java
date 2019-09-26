@@ -1,10 +1,12 @@
 package com.capgemini.cn.demo.FileManage.service;
 
+import com.capgemini.cn.demo.FileManage.entity.AccessoryFile;
 import com.capgemini.cn.demo.FileManage.entity.FileInfo;
 import com.capgemini.cn.demo.FileManage.entity.FileType;
 import com.capgemini.cn.demo.FileManage.mapper.FileInfoMapper;
 import com.capgemini.cn.demo.FileManage.mapper.FileTypeMapper;
 import com.capgemini.cn.demo.FileManage.vo.repuest.FileInfoAddVo;
+import com.capgemini.cn.demo.FileManage.vo.response.AccessoryFileVo;
 import com.capgemini.cn.demo.FileManage.vo.response.FileInfoVo;
 import com.capgemini.cn.demo.baseVo.RespVos;
 import com.capgemini.cn.demo.userSystem.entity.User;
@@ -14,6 +16,7 @@ import com.capgemini.cn.demo.utils.IdWorker;
 import com.capgemini.cn.demo.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.List;
@@ -35,7 +38,7 @@ public class FileInfoServiceImpl implements FileInfoService {
         RespVos<FileInfoVo> respVos=new RespVos<>();
         List<FileInfo> fileInfoList=fileInfoMapper.listFileInfo();
         respVos.setSize(fileInfoList.size());
-        respVos.setVos(fileInfoList.stream().map(this::convertToVo).collect(Collectors.toList()));
+        respVos.setVos(fileInfoList.stream().map(this::convertFileToVo).collect(Collectors.toList()));
 
         return respVos;
     }
@@ -79,12 +82,16 @@ public class FileInfoServiceImpl implements FileInfoService {
     }
 
     @Override
-    public FileInfoVo convertToVo(FileInfo fileInfo) {
+    public List<Long> uploadAccessoryFile(MultipartFile[] files) {
+        return null;
+    }
+
+    public FileInfoVo convertFileToVo(FileInfo fileInfo) {
         FileInfoVo fileInfoVo=new FileInfoVo();
 
         fileInfoVo.setFileId(fileInfo.getFileId());
         fileInfoVo.setFileName(fileInfo.getFileName());
-        fileInfoVo.setFilePath(fileInfo.getFilePath());
+        fileInfoVo.setFilePath(fileInfo.getFilePath().replace("\\\\","\\"));
         fileInfoVo.setParentId(fileInfo.getParentId());
         fileInfoVo.setRemark(fileInfo.getRemark());
         fileInfoVo.setCreateDate(fileInfo.getCreatDate());
@@ -96,7 +103,34 @@ public class FileInfoServiceImpl implements FileInfoService {
         FileType fileType=fileTypeMapper.getFileTypeByFileTypeId(fileInfo.getFileType());
         fileInfoVo.setFileType(fileType);
 
-        return fileInfoVo;
+        List<AccessoryFile> accessoryFiles=fileInfoMapper.getAccessoryFileByparentId(fileInfo.getFileId());
 
+        fileInfoVo.setAccessoryFileList(accessoryFiles.stream().map(this::convertAccessoryToVo)
+        .collect(Collectors.toList()));
+
+        return fileInfoVo;
     }
+
+
+    public AccessoryFileVo convertAccessoryToVo(AccessoryFile accessoryFile) {
+        AccessoryFileVo accessoryFileVo=new AccessoryFileVo();
+
+        User user=userMapper.getUser(accessoryFile.getCreateUserId());
+        accessoryFileVo.setCreateUserId(user.getUserId());
+        accessoryFileVo.setCreateUserName(user.getUsername());
+
+        FileType fileType=fileTypeMapper.getFileTypeByFileTypeId(accessoryFile.getAccessoryTypeId());
+        accessoryFileVo.setAccessoryType(fileType);
+
+        accessoryFileVo.setAccessoryId(accessoryFile.getAccessoryId());
+        accessoryFileVo.setAccessoryName(accessoryFile.getAccessoryName());
+        accessoryFileVo.setAccessoryPath(accessoryFile.getAccessoryPath());
+        accessoryFileVo.setCreateDate(accessoryFile.getCreateDate());
+        accessoryFileVo.setAccessorySize(accessoryFile.getAccessorySize());
+        accessoryFileVo.setFileId(accessoryFile.getFileId());
+
+        return accessoryFileVo;
+    }
+
+
 }

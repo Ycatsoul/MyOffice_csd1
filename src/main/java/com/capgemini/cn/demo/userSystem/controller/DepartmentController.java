@@ -16,6 +16,7 @@ import java.util.List;
 @RestController
 @Api(value = "部门管理")
 public class DepartmentController {
+
 	@Autowired
 	DepartService departService;
 	@Autowired

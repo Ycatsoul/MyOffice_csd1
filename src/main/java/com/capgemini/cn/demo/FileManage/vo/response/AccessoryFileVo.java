@@ -1,11 +1,12 @@
-package com.capgemini.cn.demo.FileManage.entity;
+package com.capgemini.cn.demo.FileManage.vo.response;
 
+import com.capgemini.cn.demo.FileManage.entity.FileType;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class AccessoryFile {
+public class AccessoryFileVo {
 
     private Long accessoryId;
 
@@ -16,11 +17,13 @@ public class AccessoryFile {
 
     private int accessorySize;
 
-    private Long accessoryTypeId;
+    private FileType accessoryType;
 
     private Date createDate;
 
     private String accessoryPath;
 
     private Long createUserId;
+
+    private String createUserName;
 }

@@ -57,5 +57,5 @@ public class FileInfoVo {
     /**
      * 附件列表
      */
-    private List<AccessoryFile> accessoryFileList;
+    private List<AccessoryFileVo> accessoryFileList;
 }

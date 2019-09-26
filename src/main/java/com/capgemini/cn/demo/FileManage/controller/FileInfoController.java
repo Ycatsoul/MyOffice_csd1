@@ -1,9 +1,12 @@
 package com.capgemini.cn.demo.FileManage.controller;
 
 import com.capgemini.cn.demo.FileManage.service.FileInfoService;
+import com.capgemini.cn.demo.FileManage.vo.repuest.AccessoryFileAddVo;
 import com.capgemini.cn.demo.FileManage.vo.repuest.FileInfoAddVo;
 import com.capgemini.cn.demo.FileManage.vo.repuest.FileInfoEditVo;
+import com.capgemini.cn.demo.FileManage.vo.response.FileInfoVo;
 import com.capgemini.cn.demo.baseVo.RespBean;
+import com.capgemini.cn.demo.baseVo.RespVos;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,18 @@ public class FileInfoController {
 
     @Autowired
     FileInfoService fileInfoService;
+
+    @GetMapping("/listFile")
+    public RespBean listFile(){
+
+        RespVos<FileInfoVo> respVos=fileInfoService.listFileInfoTree();
+
+        if(respVos!=null&&respVos.getSize()>=0){
+            return  RespBean.ok("查询成功",respVos);
+        }
+        return RespBean.error("查询失败");
+
+    }
     @PostMapping("/addFile")
     public RespBean addFile(@RequestBody FileInfoAddVo fileInfoAddVo){
         Integer res=fileInfoService.createNewFolder(fileInfoAddVo);
@@ -30,5 +45,12 @@ public class FileInfoController {
     public RespBean editFile(@RequestBody FileInfoEditVo fileInfoEditVo){
         return RespBean.ok("接口测试ok");
 
+    }
+
+    //上传文件，返回List<Long>id
+    @PostMapping("/addAccessoryFile")
+    public RespBean addAccessoryFile(AccessoryFileAddVo accessoryFileAddVo){
+
+        return RespBean.error("文件上传失败");
     }
 }
