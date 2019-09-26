@@ -2,6 +2,8 @@ package com.capgemini.cn.demo.FileManage.entity;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class FileInfo {
 
@@ -14,7 +16,7 @@ public class FileInfo {
     //数据库字段的类型改为BIGINT(20)
     private Long fileOwner;
 
-    private Data creatDate;
+    private Date creatDate;
 
     private Long parentId;
 

@@ -9,6 +9,7 @@ public class AccessoryFile {
 
     private Long accessoryId;
 
+    //父级文件夹ID
     private Long fileId;
 
     private String accessoryName;

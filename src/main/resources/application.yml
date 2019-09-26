@@ -99,7 +99,7 @@ spring:
     favicon:
       enabled: false
   datasource:
-    url: jdbc:mysql://localhost:3306/myoffice?useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true
+    url: jdbc:mysql://localhost:3306/myoffice?useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true
     username: root
     password: root
 
