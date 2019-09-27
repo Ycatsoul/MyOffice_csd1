@@ -91,9 +91,4 @@
         </foreach>
     </delete>
 
-    <!-- 根据manualSignId获取ManualSign -->
-    <!--<select id="getManualSign" resultType="com.capgemini.cn.demo.userSystem.entity.ManualSign">
-        SELECT * FROM  manualsign WHERE manualSignId = #{manualSignId}
-    </select>-->
-
 </mapper>
