@@ -52,7 +52,7 @@ public class ManualSignAdminController {
         return RespBean.error("查询失败! 未找到相关信息!");
     }
 
-    //@ControllerLog(name = "修改签到信息")
+    @ControllerLog(name = "修改签到信息")
     @ApiOperation("修改签到信息")
     @PutMapping("/")
     public RespBean updateManualSign(@RequestBody ManualSignEditVo manualSignEditVo) {
@@ -61,7 +61,7 @@ public class ManualSignAdminController {
         return res > 0 ? RespBean.ok("修改成功!") : RespBean.error("修改失败! 未找到相关信息!");
     }
 
-    //@ControllerLog(name = "删除签到信息")
+    @ControllerLog(name = "删除签到信息")
     @ApiOperation("删除签到")
     @PostMapping("/delete")
     public RespBean deleteManualSigns(@RequestBody DeleteVo deleteVo) {
