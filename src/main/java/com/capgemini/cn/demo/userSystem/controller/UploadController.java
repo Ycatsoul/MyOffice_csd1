@@ -107,10 +107,6 @@ public class UploadController {
         String waterMarkContent="MY OFFICE";  //水印内容
         Color color=new Color(162, 164, 165);                               //水印图片色彩以及透明度
         new WaterMarkUtils().addWaterMark(srcImgPath, tarImgPath, waterMarkContent,color ,font);
-
-
-
-
     }
 
 

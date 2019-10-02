@@ -2,15 +2,17 @@ package com.capgemini.cn.demo.userSystem.service.impl;
 
 import com.capgemini.cn.demo.baseVo.DeleteVo;
 import com.capgemini.cn.demo.baseVo.RespVos;
-import com.capgemini.cn.demo.userSystem.entity.BranchInfo;
-import com.capgemini.cn.demo.userSystem.entity.DepartInfo;
+import com.capgemini.cn.demo.userSystem.entity.Branch;
+import com.capgemini.cn.demo.userSystem.entity.Department;
 import com.capgemini.cn.demo.userSystem.entity.Role;
 import com.capgemini.cn.demo.userSystem.entity.User;
-import com.capgemini.cn.demo.userSystem.mapper.BranchInfoMapper;
-import com.capgemini.cn.demo.userSystem.mapper.DepartMapper;
+import com.capgemini.cn.demo.userSystem.mapper.BranchMapper;
+import com.capgemini.cn.demo.userSystem.mapper.DepartmentMapper;
 import com.capgemini.cn.demo.userSystem.mapper.UserMapper;
 import com.capgemini.cn.demo.userSystem.mapper.UserRoleMapper;
 import com.capgemini.cn.demo.userSystem.service.UserService;
+import com.capgemini.cn.demo.userSystem.vo.request.BranchSearchVo;
+import com.capgemini.cn.demo.userSystem.vo.request.DepartmentSearchVo;
 import com.capgemini.cn.demo.userSystem.vo.request.UserEditVo;
 import com.capgemini.cn.demo.userSystem.vo.request.UserSearchVo;
 import com.capgemini.cn.demo.userSystem.vo.response.BraDepUserVo;
@@ -23,7 +25,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,9 +43,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRoleMapper userRoleMapper;
     @Autowired
-    DepartMapper departmentMapper;
+    DepartmentMapper departmentMapper;
     @Autowired
-    BranchInfoMapper branchMapper;
+    BranchMapper branchMapper;
 
 
     @Override
@@ -105,19 +106,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public RespVos<BraDepUserVo> getBraDepUserTree() {
-        List<BranchInfo> branches = branchMapper.selectAllBranchInfo();
-        List<DepartInfo> departments = departmentMapper.selectAllDepart();
+        List<Branch> branches = branchMapper.listBranches(new BranchSearchVo(){{setSize(100);}});
+        List<Department> departments = departmentMapper.listDepartments(new DepartmentSearchVo(){{setSize(200);}});
         List<User> users = userMapper.listUsers(new UserSearchVo(){{setSize(1000);}});
         List<BraDepUserVo> braDepUserVos = new ArrayList<>();
         RespVos<BraDepUserVo> respVos = new RespVos<>();
 
-        for (BranchInfo branch : branches) {
+        for (Branch branch : branches) {
             List<BraDepUserVo.Department> convertedDepartments = new ArrayList<>();
-            for (DepartInfo department : departments) {
-                if (department.getBranchId()==branch.getBranchId()) {
+            for (Department department : departments) {
+                if (department.getBranchId().equals(branch.getBranchId())) {
                     List<BraDepUserVo.Department.User> convertedUsers = new ArrayList<>();
                     for (User user : users) {
-                        if (user.getDepartmentId()==department.getDepartId()) {
+                        if (user.getDepartmentId().equals(department.getDepartmentId())) {
                             convertedUsers.add(new BraDepUserVo.Department.User() {{
                                 setUserId(user.getUserId());
                                 setName(user.getName());
@@ -125,8 +126,8 @@ public class UserServiceImpl implements UserService {
                         }
                     }
                     convertedDepartments.add(new BraDepUserVo.Department(){{
-                        setDepartmentId(department.getDepartId());
-                        setDepartmentName(department.getDepartName());
+                        setDepartmentId(department.getDepartmentId());
+                        setDepartmentName(department.getDepartmentName());
                         setUsers(convertedUsers);
                     }});
                 }
@@ -190,9 +191,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserVo convertToVo(User user) {
         UserVo userVo = new UserVo();
-        IdToBeJson id=new IdToBeJson();
-        id.setId(Long.valueOf(user.getDepartmentId().toString()));
-        DepartInfo department = departmentMapper.getDepartInfoById(id);
+        Department department = departmentMapper.getDepartment(user.getDepartmentId());
         List<Role> roles = userRoleMapper.getRolesByUserId(user.getUserId());
 
         userVo.setUserId(user.getUserId());
@@ -201,7 +200,7 @@ public class UserServiceImpl implements UserService {
         userVo.setGender(user.getGender());
         userVo.setAvatar(user.getAvatar());
         userVo.setDepartmentId(user.getDepartmentId());
-        userVo.setDepartmentName(department == null ? null : department.getDepartName());
+        userVo.setDepartmentName(department == null ? null : department.getDepartmentName());
         userVo.setRoles(roles);
         userVo.setIsBlocked(user.getIsBlocked());
 

@@ -8,16 +8,15 @@ import com.capgemini.cn.demo.manualSign.service.ManualSignService;
 import com.capgemini.cn.demo.manualSign.vo.request.ManualSignEditVo;
 import com.capgemini.cn.demo.manualSign.vo.request.ManualSignSearchVo;
 import com.capgemini.cn.demo.manualSign.vo.response.ManualSignVo;
-import com.capgemini.cn.demo.userSystem.entity.BranchInfo;
-import com.capgemini.cn.demo.userSystem.entity.DepartInfo;
+import com.capgemini.cn.demo.userSystem.entity.Branch;
+import com.capgemini.cn.demo.userSystem.entity.Department;
 import com.capgemini.cn.demo.userSystem.entity.User;
-import com.capgemini.cn.demo.userSystem.mapper.BranchInfoMapper;
-import com.capgemini.cn.demo.userSystem.mapper.DepartMapper;
+import com.capgemini.cn.demo.userSystem.mapper.BranchMapper;
+import com.capgemini.cn.demo.userSystem.mapper.DepartmentMapper;
 import com.capgemini.cn.demo.userSystem.mapper.UserMapper;
 import com.capgemini.cn.demo.utils.IdToBeJson;
 import com.capgemini.cn.demo.utils.IdWorker;
 import com.capgemini.cn.demo.utils.UserUtils;
-import io.micrometer.core.instrument.Meter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,13 +35,13 @@ import java.util.stream.Collectors;
 public class ManualSignServiceImpl implements ManualSignService {
 
     @Autowired
-    BranchInfoMapper branchInfoMapper;
+    BranchMapper branchInfoMapper;
 
     @Autowired
     ManualSignMapper manualSignMapper;
 
     @Autowired
-    DepartMapper departMapper;
+    DepartmentMapper departMapper;
 
     @Autowired
     UserMapper userMapper;
@@ -79,17 +78,15 @@ public ManualSignVo addManualSign(ManualSignEditVo manualSignEditVo) {
 
     ManualSign manualSign = manualSignMapper.getManualSign(manualSignEditVo.getManualSignId());
     User user = userMapper.getUser(manualSignEditVo.getUserId());
-    IdToBeJson idToBeJson=new IdToBeJson();
-    idToBeJson.setId(user.getDepartmentId());
-    DepartInfo departInfo = departMapper.getDepartInfoById(idToBeJson);
-    BranchInfo branchInfo = branchInfoMapper.getBranchInfoById(departInfo.getBranchId());
+    Department departInfo = departMapper.getDepartment(user.getDepartmentId());
+    Branch branchInfo = branchInfoMapper.getBranch(departInfo.getBranchId());
 
     ManualSignVo manualSignVo = new ManualSignVo();
     manualSignVo.setManualSignId(manualSign.getManualSignId());
     manualSignVo.setUserId(user.getUserId());
     manualSignVo.setUsername(user.getUsername());
     manualSignVo.setName(user.getName());
-    manualSignVo.setDepartmentName(departInfo.getDepartName());
+    manualSignVo.setDepartmentName(departInfo.getDepartmentName());
     manualSignVo.setBranchName(branchInfo.getBranchName());
     manualSignVo.setSignDesc(manualSign.getSignDesc());
     manualSignVo.setSignTag(manualSign.getSignTag());
@@ -117,14 +114,14 @@ public ManualSignVo addManualSign(ManualSignEditVo manualSignEditVo) {
 
         IdToBeJson idToBeJson=new IdToBeJson();
         idToBeJson.setId(user.getDepartmentId());
-        DepartInfo departInfo = departMapper.getDepartInfoById(idToBeJson);
-        BranchInfo branchInfo = branchInfoMapper.getBranchInfoById(departInfo.getBranchId());
+        Department departInfo = departMapper.getDepartment(user.getDepartmentId());
+        Branch branchInfo = branchInfoMapper.getBranch(departInfo.getBranchId());
 
         manualSignVo.setManualSignId(manualSign.getManualSignId());
         manualSignVo.setUserId(manualSign.getUserId());
         manualSignVo.setUsername(user.getUsername());
         manualSignVo.setName(user.getName());
-        manualSignVo.setDepartmentName(departInfo.getDepartName());
+        manualSignVo.setDepartmentName(departInfo.getDepartmentName());
         manualSignVo.setBranchName(branchInfo.getBranchName());
         manualSignVo.setSignTime(manualSign.getSignTime());
         manualSignVo.setSignDesc(manualSign.getSignDesc());

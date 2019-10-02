@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capgemini.cn.demo.userSystem.mapper.DepartmentMapper">
+    
+    <!-- 根据departmentId获取Department -->
+    <select id="getDepartment" resultType="com.capgemini.cn.demo.userSystem.entity.Department">
+        SELECT * FROM Department WHERE departmentId = #{departmentId}
+    </select>
+    
+    <!-- 获取Department列表 -->
+    <select id="listDepartments"
+            parameterType="com.capgemini.cn.demo.userSystem.vo.request.DepartmentSearchVo"
+            resultType="com.capgemini.cn.demo.userSystem.entity.Department">
+        SELECT *
+        FROM Department
+        <where>
+            <if test="departmentSearchVo.departmentName != null">
+                departmentName LIKE concat(concat('%', #{departmentSearchVo.departmentName}), '%')
+            </if>
+            <if test="departmentSearchVo.branchId != null">
+                AND branchId = #{departmentSearchVo.branchId}
+            </if>
+        </where>
+        LIMIT #{departmentSearchVo.start}, #{departmentSearchVo.size}
+    </select>
+    
+    <!-- 统计Department长度 -->
+    <select id="countDepartments"
+            resultType="Integer"
+            parameterType="com.capgemini.cn.demo.userSystem.vo.request.BranchSearchVo">
+        SELECT count(1)
+        FROM Department
+        <where>
+            <if test="departmentSearchVo.departmentName != null">
+                departmentName LIKE concat(concat('%', #{departmentSearchVo.departmentName}), '%')
+            </if>
+            <if test="departmentSearchVo.branchId != null">
+                AND branchId = #{departmentSearchVo.branchId}
+            </if>
+        </where>
+    </select>
+    
+    <!-- 插入一条Department记录 -->
+    <insert id="insertDepartment" parameterType="com.capgemini.cn.demo.userSystem.vo.request.DepartmentEditVo">
+        INSERT INTO Department
+            (
+             departmentId,
+             departmentName,
+             connectPhone,
+             connectTelephone,
+             principalUserId,
+             branchId
+            )
+        VALUES
+            (
+             #{departmentEditVo.departmentId},
+             #{departmentEditVo.departmentName},
+             #{departmentEditVo.connectPhone},
+             #{departmentEditVo.connectTelephone},
+             #{departmentEditVo.principalUserId},
+             #{departmentEditVo.branchId}
+            )
+    </insert>
+    
+    <!-- 更新一条Department记录 -->
+    <update id="updateDepartment" parameterType="com.capgemini.cn.demo.userSystem.vo.request.DepartmentEditVo">
+        UPDATE Department
+        SET departmentName = #{departmentEditVo.departmentName},
+            connectPhone = #{departmentEditVo.connectPhone},
+            connectTelephone = #{departmentEditVo.connectTelephone},
+            principalUserId = #{departmentEditVo.principalUserId},
+            branchId = #{departmentEditVo.branchId}
+        WHERE departmentId = #{departmentEditVo.departmentId}
+    </update>
+    
+    <!-- 根据departmentId删除Department -->
+    <delete id="deleteDepartments" parameterType="java.util.List">
+        DELETE FROM Department where departmentId IN
+        <foreach collection="departmentIds" item="departmentId" separator="," open="(" close=")">
+            #{departmentId}
+        </foreach>
+    </delete>
+    
+</mapper>
