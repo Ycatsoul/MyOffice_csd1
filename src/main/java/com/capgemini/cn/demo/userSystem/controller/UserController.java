@@ -10,11 +10,15 @@ import com.capgemini.cn.demo.userSystem.vo.request.UserEditVo;
 import com.capgemini.cn.demo.userSystem.vo.request.UserSearchVo;
 import com.capgemini.cn.demo.userSystem.vo.response.BraDepUserVo;
 import com.capgemini.cn.demo.userSystem.vo.response.UserVo;
+import com.capgemini.cn.demo.utils.IdToBeJson;
+import com.capgemini.cn.demo.utils.WaterMarkUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 
 /**
  * @author hasaker
@@ -26,9 +30,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/user")
 public class UserController extends BaseController {
-
+    private long g =0L;
     @Autowired
     UserService userService;
+
+    @ApiOperation("为了让我知道是在修改谁")
+    @PostMapping("/forGiveMeUserId")
+    public void UsforGiveMeUserIder(@Valid @RequestBody IdToBeJson idToBeJson) {
+        g = idToBeJson.getId();
+    }
 
     @ApiOperation("查询用户")
     @GetMapping("/{userId}")
@@ -50,7 +60,6 @@ public class UserController extends BaseController {
         if (respVos != null && respVos.getSize() > 0) {
             return RespBean.ok("查询成功!", respVos);
         }
-
         return RespBean.error("查询失败！");
     }
 
@@ -66,7 +75,7 @@ public class UserController extends BaseController {
         return RespBean.error("查询失败！");
     }
 
-    //@ControllerLog(name = "添加用户")
+    @ControllerLog(name = "添加用户")
     @ApiOperation("添加User")
     @PostMapping("/")
     public RespBean addUser(@RequestBody UserEditVo userEditVo) {
@@ -102,5 +111,21 @@ public class UserController extends BaseController {
         return res > 0 ? RespBean.ok("成功删除" + res + "个用户!") : RespBean.error("删除失败!");
     }
 
+    @ApiOperation("上传用户头像")
+    @PostMapping("/uploadAvatar")
+    public RespBean uploadAvatar(@RequestParam("file")MultipartFile file){
+
+        String originalFilename=file.getOriginalFilename();
+        String fileSuffix=originalFilename.substring(originalFilename.lastIndexOf("."));
+        if(!fileSuffix.equalsIgnoreCase(".jpg")){
+            return RespBean.error("上传头像图片只能是 jpg 格式");
+        }
+
+        String imageUrl=userService.uploadAvatar(file);
+        if(imageUrl!=null){
+            return RespBean.ok("上传头像成功",imageUrl);
+        }
+        return RespBean.error("上传头像错误");
+    }
 
 }

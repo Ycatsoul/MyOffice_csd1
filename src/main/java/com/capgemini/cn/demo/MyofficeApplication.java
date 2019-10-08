@@ -13,6 +13,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @author Andriy
  */
 @SpringBootApplication
+@MapperScan("com.capgemini.cn.demo.*.mapper")
+@EnableSwagger2
 public class MyofficeApplication extends BaseBootApplication {
 
     public static void main(String[] args) {

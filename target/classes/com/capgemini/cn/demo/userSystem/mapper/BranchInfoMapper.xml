@@ -17,7 +17,7 @@
 	<delete id="deleteBranchInfoById">
 		delete from branchinfo where branchId=#{id}
 	</delete>
-	<select id="selectBranchInfoIdByName" resultType="Integer">
+	<select id="selectBranchInfoIdByName" resultType="Long">
 		select branchid from branchinfo where branchName=#{name}
 	</select>
 	

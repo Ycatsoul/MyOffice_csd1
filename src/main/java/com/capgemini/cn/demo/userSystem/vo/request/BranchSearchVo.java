@@ -7,12 +7,11 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * @author WYQ
- * @description:一人做事一人当
- * @description:小丁做事小叮当
- * @date 2019/9/24 16:07
+ * @Description:
+ * @Classname :
+ * @author: GuoBingjun
+ * @date:
  */
-
 @EqualsAndHashCode(callSuper = true)
 @Data
 @ApiModel

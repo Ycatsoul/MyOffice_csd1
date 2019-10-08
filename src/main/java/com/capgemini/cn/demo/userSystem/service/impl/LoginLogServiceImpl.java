@@ -27,10 +27,6 @@ public class LoginLogServiceImpl implements LoginLogService {
     @Autowired
     UserMapper userMapper;
 
-    public LoginLogServiceImpl(LoginLogMapper loginLogMapper, UserMapper userMapper) {
-        this.loginLogMapper = loginLogMapper;
-        this.userMapper = userMapper;
-    }
 
     @Override
     public RespVos<LoginLogVo> listLoginLogs(LoginLogSearchVo loginLogSearchVo) {

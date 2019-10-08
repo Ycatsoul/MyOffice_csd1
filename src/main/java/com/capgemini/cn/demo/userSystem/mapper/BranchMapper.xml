@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capgemini.cn.demo.userSystem.mapper.BranchMapper">
+    
+    <!-- 根据branchId获取Branch -->
+    <select id="getBranch" resultType="com.capgemini.cn.demo.userSystem.entity.Branch">
+        SELECT * FROM Branch WHERE branchId = #{branchId}
+    </select>
+
+    <!-- 获取Branch列表 -->
+    <select id="listBranches"
+            parameterType="com.capgemini.cn.demo.userSystem.vo.request.BranchSearchVo"
+            resultType="com.capgemini.cn.demo.userSystem.entity.Branch">
+        SELECT *
+        FROM Branch
+        <where>
+            <if test="branchSearchVo.branchName != null">
+                branchName LIKE concat(concat('%', #{branchSearchVo.branchName}), '%')
+                OR
+                branchShortName LIKE concat(concat('%', #{branchSearchVo.branchName}), '%')
+            </if>
+        </where>
+        LIMIT #{branchSearchVo.start}, #{branchSearchVo.size}
+    </select>
+    
+    <!-- 统计Branch长度 -->
+    <select id="countBranches"
+            resultType="Integer"
+            parameterType="com.capgemini.cn.demo.userSystem.vo.request.BranchSearchVo">
+        SELECT count(1)
+        FROM Branch
+        <where>
+            <if test="branchSearchVo.branchName != null">
+                branchName LIKE concat(concat('%', #{branchSearchVo.branchName}), '%')
+                OR
+                branchShortName LIKE concat(concat('%', #{branchSearchVo.branchName}), '%')
+            </if>
+        </where>
+    </select>
+
+    <!-- 插入一条Branch记录 -->
+    <insert id="insertBranch" parameterType="com.capgemini.cn.demo.userSystem.vo.request.BranchEditVo">
+        INSERT INTO Branch (branchId, branchName, branchShortName)
+        VALUES (#{branchEditVo.branchId},
+                #{branchEditVo.branchName},
+                #{branchEditVo.branchShortName})
+    </insert>
+
+    <!-- 更新一条Branch记录 -->
+    <update id="updateBranch" parameterType="com.capgemini.cn.demo.userSystem.entity.Branch">
+        UPDATE Branch
+        <set>
+            <if test="branchEditVo.branchName != null">
+                branchName = #{branchEditVo.branchName},
+            </if>
+            <if test="branchEditVo.branchShortName != null">
+                branchShortName = #{branchEditVo.branchShortName}
+            </if>
+        </set>
+        WHERE branchId = #{branchEditVo.branchId}
+    </update>
+
+    <!-- 根据branchId删除Branch -->
+    <delete id="deleteBranches" parameterType="java.util.List">
+        DELETE FROM Branch where branchId IN
+        <foreach collection="branchIds" item="branchId" separator="," open="(" close=")">
+            #{branchId}
+        </foreach>
+    </delete>
+
+</mapper>
