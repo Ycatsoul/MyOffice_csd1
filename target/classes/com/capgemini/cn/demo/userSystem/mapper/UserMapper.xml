@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capgemini.cn.demo.userSystem.mapper.UserMapper">
+    
+    <!-- User搜索字段 -->
+    <sql id="searchFields">
+        <if test="userSearchVo.username != null">
+            AND username LIKE concat(concat('%', #{userSearchVo.username}), '%')
+        </if>
+        <if test="userSearchVo.name != null">
+            AND name LIKE concat(concat('%', #{userSearchVo.name}), '%')
+        </if>
+        <if test="userSearchVo.gender != null">
+            AND gender = #{userSearchVo.gender}
+        </if>
+        <if test="userSearchVo.departmentId != null">
+            AND departmentId = #{userSearchVo.departmentId}
+        </if>
+        <if test="userSearchVo.branchId != null">
+            AND departmentId IN (
+                SELECT departmentId FROM Department WHERE branchId = #{userSearchVo.branchId}
+            )
+        </if>
+    </sql>
+    
+    <!-- 获取所有userId -->
+    <select id="getAllUserIds" resultType="Long">
+        SELECT userId FROM User;
+    </select>
+    
+    <!-- 根据userId查询User -->
+    <select id="getUser" resultType="com.capgemini.cn.demo.userSystem.entity.User">
+        SELECT * FROM User WHERE userId = #{userId};
+    </select>
+    
+    <!-- 根据username查询User -->
+    <select id="getUserByUsername" resultType="com.capgemini.cn.demo.userSystem.entity.User">
+        SELECT * FROM User WHERE username = #{username};
+    </select>
+    
+    <!-- 获取User列表 -->
+    <select id="listUsers"
+            parameterType="com.capgemini.cn.demo.userSystem.vo.request.UserSearchVo"
+            resultType="com.capgemini.cn.demo.userSystem.entity.User">
+        SELECT *
+        FROM User
+        WHERE isBlocked = FALSE <include refid="searchFields" />
+        LIMIT #{userSearchVo.start}, #{userSearchVo.size}
+    </select>
+    
+    <!-- 统计User列表长度 -->
+    <select id="countUsers"
+            resultType="Integer"
+            parameterType="com.capgemini.cn.demo.userSystem.vo.request.UserSearchVo">
+        SELECT count(*)
+        FROM User
+        WHERE isBlocked = FALSE <include refid="searchFields" />
+    </select>
+
+    <!-- 插入一条User记录 -->
+    <insert id="insertUser" parameterType="com.capgemini.cn.demo.userSystem.vo.request.UserEditVo">
+        INSERT INTO User
+            (
+             userId, username, password, name, gender, avatar, departmentId, isBlocked
+            )
+        values
+            (
+             #{userEditVo.userId},
+             #{userEditVo.username},
+             #{userEditVo.password},
+             #{userEditVo.name},
+             #{userEditVo.gender},
+             #{userEditVo.avatar},
+             #{userEditVo.departmentId},
+             #{userEditVo.isBlocked}
+            )
+    </insert>
+
+    <!-- 更新一条User记录 -->
+    <update id="updateUser" parameterType="com.capgemini.cn.demo.userSystem.vo.request.UserEditVo">
+        UPDATE User
+        SET username = #{userEditVo.username},
+            password = #{userEditVo.password},
+            name = #{userEditVo.name},
+            gender = #{userEditVo.gender},
+            avatar = #{userEditVo.avatar},
+            departmentId = #{userEditVo.departmentId}
+        WHERE userId = #{userEditVo.userId}
+    </update>
+
+    <!-- 屏蔽User -->
+    <update id="blockUsers">
+        UPDATE User
+        SET isBlocked = TRUE
+        WHERE userId IN
+            <foreach collection="userIds" item="userId" separator="," open="(" close=")">
+                #{userId}
+            </foreach>
+    </update>
+    
+    <!-- 删除User记录 -->
+    <delete id="deleteUsers">
+        DELETE FROM User
+        WHERE userId IN
+            <foreach collection="userIds" item="userId" separator="," open="(" close=")">
+                #{userId}
+            </foreach>
+    </delete>
+
+</mapper>
