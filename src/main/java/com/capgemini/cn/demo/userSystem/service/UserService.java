@@ -8,6 +8,7 @@ import com.capgemini.cn.demo.userSystem.vo.request.UserSearchVo;
 import com.capgemini.cn.demo.userSystem.vo.response.BraDepUserVo;
 import com.capgemini.cn.demo.userSystem.vo.response.UserVo;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -33,4 +34,6 @@ public interface UserService extends UserDetailsService {
     Integer deleteUsers(DeleteVo deleteVo);
 
     UserVo convertToVo(User user);
+
+    String uploadAvatar(MultipartFile file);
 }
