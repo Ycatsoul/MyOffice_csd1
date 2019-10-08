@@ -3,6 +3,7 @@ package com.capgemini.cn.demo.fileManage.service;
 import com.capgemini.cn.demo.fileManage.vo.repuest.AccessoryFileAddVo;
 import com.capgemini.cn.demo.fileManage.vo.repuest.FileInfoAddVo;
 import com.capgemini.cn.demo.fileManage.vo.repuest.FileInfoEditVo;
+import com.capgemini.cn.demo.fileManage.vo.repuest.FileInfoSearchVo;
 import com.capgemini.cn.demo.fileManage.vo.response.FileInfoVo;
 import com.capgemini.cn.demo.baseVo.RespVos;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +16,8 @@ public interface FileInfoService {
     Integer createNewFolder(FileInfoAddVo fileInfoAddVo);
 
     RespVos<FileInfoVo> listFileInfoTree();
+
+    RespVos<FileInfoVo> searchFile(FileInfoSearchVo fileInfoSearchVo);
 
     Integer uploadAccessoryFile(MultipartFile file,Long parentId, HttpServletRequest request);
 

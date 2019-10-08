@@ -19,12 +19,21 @@ import com.capgemini.cn.demo.userSystem.vo.response.BraDepUserVo;
 import com.capgemini.cn.demo.userSystem.vo.response.UserVo;
 import com.capgemini.cn.demo.utils.IdToBeJson;
 import com.capgemini.cn.demo.utils.IdWorker;
+import com.capgemini.cn.demo.utils.WaterMarkUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -205,5 +214,42 @@ public class UserServiceImpl implements UserService {
         userVo.setIsBlocked(user.getIsBlocked());
 
         return userVo;
+    }
+
+    /**
+     * 上传用户头像
+     * @param file
+     * @return
+     */
+    @Override
+    public String uploadAvatar(MultipartFile multipartFile) {
+        HttpServletRequest request= ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        HttpSession session=request.getSession();
+        //文件加水印存在磁盘中
+        Long userId=(Long) session.getAttribute("currentUserId");
+        String originalFilename=multipartFile.getOriginalFilename();
+        String fileSuffix=originalFilename.substring(originalFilename.lastIndexOf("."));
+        String newfileName=userId+fileSuffix;
+        if(userId!=null){
+            File file=new File("C:\\文件管理\\avatar\\"+newfileName);
+            try {
+                multipartFile.transferTo(file);
+                String filePath=file.getAbsolutePath();
+                String srcImgPath=filePath;
+                String tarImgPath=filePath;
+                Font font = new Font("微软雅黑", Font.BOLD, 100);                     //水印字体
+                String waterMarkContent="MY OFFICE";  //水印内容
+                Color color=new Color(250, 255, 248);                               //水印图片色彩以及透明度
+                new WaterMarkUtils().addWaterMark(srcImgPath, tarImgPath, waterMarkContent,color ,font);
+                Integer res=userMapper.updateAvatar(filePath,userId);
+                return res>0?filePath:null;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+        //更新用户表信息，返回url字符串
+
+        return null;
     }
 }

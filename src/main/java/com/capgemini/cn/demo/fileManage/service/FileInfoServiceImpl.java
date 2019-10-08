@@ -8,6 +8,7 @@ import com.capgemini.cn.demo.fileManage.mapper.FileTypeMapper;
 import com.capgemini.cn.demo.fileManage.vo.repuest.AccessoryFileAddVo;
 import com.capgemini.cn.demo.fileManage.vo.repuest.FileInfoAddVo;
 import com.capgemini.cn.demo.fileManage.vo.repuest.FileInfoEditVo;
+import com.capgemini.cn.demo.fileManage.vo.repuest.FileInfoSearchVo;
 import com.capgemini.cn.demo.fileManage.vo.response.AccessoryFileVo;
 import com.capgemini.cn.demo.fileManage.vo.response.FileInfoVo;
 import com.capgemini.cn.demo.baseVo.RespVos;
@@ -49,6 +50,21 @@ public class FileInfoServiceImpl implements FileInfoService {
         respVos.setVos(fileInfoList.stream().map(this::convertFileToVo).collect(Collectors.toList()));
 
         return respVos;
+    }
+
+    @Override
+    public RespVos<FileInfoVo> searchFile(FileInfoSearchVo fileInfoSearchVo) {
+        RespVos<FileInfoVo> respVos = new RespVos<>();
+        List<FileInfo> fileInfos = fileInfoMapper.searchFile(fileInfoSearchVo);
+
+        if (fileInfos != null && fileInfos.size() > 0) {
+            respVos.setSize(fileInfos.size());
+            respVos.setVos(fileInfos.stream().map(this::convertFileToVo).collect(Collectors.toList()));
+
+            return respVos;
+        }
+
+        return null;
     }
 
     @Override

@@ -13,6 +13,7 @@ import java.io.*;
 
 
 @Controller
+@RequestMapping("file")
 public class UploadController {
     /*
      * 获取file.html页面

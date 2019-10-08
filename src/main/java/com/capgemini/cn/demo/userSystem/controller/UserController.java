@@ -15,6 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author hasaker
@@ -100,5 +101,22 @@ public class UserController extends BaseController {
         Integer res = userService.deleteUsers(deleteVo);
 
         return res > 0 ? RespBean.ok("成功删除" + res + "个用户!") : RespBean.error("删除失败!");
+    }
+
+    @ApiOperation("上传用户头像")
+    @PostMapping("/uploadAvatar")
+    public RespBean uploadAvatar(@RequestParam("file")MultipartFile file){
+
+        String originalFilename=file.getOriginalFilename();
+        String fileSuffix=originalFilename.substring(originalFilename.lastIndexOf("."));
+        if(!fileSuffix.equalsIgnoreCase(".jpg")){
+            return RespBean.error("上传头像图片只能是 jpg 格式");
+        }
+
+        String imageUrl=userService.uploadAvatar(file);
+        if(imageUrl!=null){
+            return RespBean.ok("上传头像成功",imageUrl);
+        }
+        return RespBean.error("上传头像错误");
     }
 }

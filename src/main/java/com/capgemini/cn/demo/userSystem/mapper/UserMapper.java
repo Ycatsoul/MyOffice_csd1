@@ -3,8 +3,11 @@ package com.capgemini.cn.demo.userSystem.mapper;
 import com.capgemini.cn.demo.userSystem.entity.User;
 import com.capgemini.cn.demo.userSystem.vo.request.UserEditVo;
 import com.capgemini.cn.demo.userSystem.vo.request.UserSearchVo;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
+import org.omg.CORBA.INTERNAL;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -36,4 +39,7 @@ public interface UserMapper {
     Integer blockUsers(@Param("userIds") List<Long> userIds);
 
     Integer deleteUsers(@Param("userIds") List<Long> userIds);
+
+    @Update("update user set avatar=#{avatar} where userId=#{userId}")
+    Integer updateAvatar(@Param("avatar")String avatar,@Param("userId")Long userId);
 }

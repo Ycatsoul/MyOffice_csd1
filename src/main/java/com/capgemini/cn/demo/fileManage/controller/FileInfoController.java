@@ -4,6 +4,7 @@ import com.capgemini.cn.demo.fileManage.service.FileInfoService;
 import com.capgemini.cn.demo.fileManage.vo.repuest.AccessoryFileAddVo;
 import com.capgemini.cn.demo.fileManage.vo.repuest.FileInfoAddVo;
 import com.capgemini.cn.demo.fileManage.vo.repuest.FileInfoEditVo;
+import com.capgemini.cn.demo.fileManage.vo.repuest.FileInfoSearchVo;
 import com.capgemini.cn.demo.fileManage.vo.response.FileInfoVo;
 import com.capgemini.cn.demo.baseVo.RespBean;
 import com.capgemini.cn.demo.baseVo.RespVos;
@@ -153,5 +154,17 @@ public class FileInfoController {
         Integer res=fileInfoService.deleteFileInfo(fileInfoId);
         return res>0?RespBean.ok("删除文件夹成功"):RespBean.error("fail");
 
+    }
+
+    @ApiOperation(value = "文件搜索")
+    @PostMapping("/search")
+    public RespBean listFiles(@RequestBody FileInfoSearchVo fileInfoSearchVo) {
+        RespVos<FileInfoVo> respVos = fileInfoService.searchFile(fileInfoSearchVo);
+
+        if (respVos != null && respVos.getVos().size() > 0) {
+            return RespBean.ok("成功", respVos);
+        }
+
+        return RespBean.error("未找到文件");
     }
 }

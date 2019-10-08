@@ -17,8 +17,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.ArrayList;
 import java.util.List;
 
-@Configuration
-@EnableSwagger2
+/*@Configuration
+@EnableSwagger2*/
 public class Swagger2 {
     @Bean
     public Docket createRestApi() {
@@ -29,7 +29,7 @@ public class Swagger2 {
         pars.add(tokenPar.build());
 
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("selfDefine")
+                //.groupName("selfDefine")
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.capgemini.cn.demo"))

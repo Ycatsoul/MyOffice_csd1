@@ -3,6 +3,7 @@ package com.capgemini.cn.demo.fileManage.mapper;
 import com.capgemini.cn.demo.fileManage.entity.AccessoryFile;
 import com.capgemini.cn.demo.fileManage.entity.FileInfo;
 import com.capgemini.cn.demo.fileManage.vo.repuest.FileInfoAddVo;
+import com.capgemini.cn.demo.fileManage.vo.repuest.FileInfoSearchVo;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -55,4 +56,6 @@ public interface FileInfoMapper {
 
     @Select("select accessoryPath from accessoryfile where accessoryId=#{accessoryId}")
     Integer getaccessoryPathById(Long accessoryId);
+
+    List<FileInfo> searchFile(@Param("fileInfoSearchVo") FileInfoSearchVo fileInfoSearchVo);
 }
