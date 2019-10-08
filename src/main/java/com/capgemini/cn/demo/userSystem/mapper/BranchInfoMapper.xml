@@ -6,11 +6,11 @@
 	<select id="selectAllBranchInfo" resultType="com.capgemini.cn.demo.userSystem.entity.BranchInfo">
 		select * from branchinfo
 	</select>
-
+	
 	<insert id="insertBranchInfo">
 		insert into branchinfo(branchName,branchShortName) values(#{branchName},#{branchShortName})
 	</insert>
-
+	
 	<update id="updateBranchInfo">
 		update branchinfo set branchName=#{branchName},branchShortName=#{branchShortName} where branchId=#{branchId}
 	</update>
@@ -20,11 +20,6 @@
 	<select id="selectBranchInfoIdByName" resultType="Integer">
 		select branchid from branchinfo where branchName=#{name}
 	</select>
-
-	<!-- 根据branchId获取Branch -->
-	<select id="getBranch" resultType="com.capgemini.cn.demo.userSystem.entity.BranchInfo">
-        SELECT * FROM Branch WHERE branchId = #{branchId}
-    </select>
 	
 	
 </mapper>

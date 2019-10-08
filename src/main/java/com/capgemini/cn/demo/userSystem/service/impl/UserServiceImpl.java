@@ -1,5 +1,6 @@
 package com.capgemini.cn.demo.userSystem.service.impl;
 
+
 import com.capgemini.cn.demo.baseVo.DeleteVo;
 import com.capgemini.cn.demo.baseVo.RespVos;
 import com.capgemini.cn.demo.userSystem.entity.BranchInfo;
@@ -192,7 +193,7 @@ public class UserServiceImpl implements UserService {
         UserVo userVo = new UserVo();
         IdToBeJson id=new IdToBeJson();
         id.setId(Integer.valueOf(user.getDepartmentId().toString()));
-        DepartInfo department = departmentMapper.getDepartment(user.getDepartmentId());
+        DepartInfo department = departmentMapper.getDepartInfoById(id);
         List<Role> roles = userRoleMapper.getRolesByUserId(user.getUserId());
 
         userVo.setUserId(user.getUserId());
