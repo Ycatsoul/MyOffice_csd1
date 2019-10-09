@@ -43,12 +43,13 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public Map<String, List<Menu>> getMenuTree() {
+    public Map<String, List<Menu>>
+    getMenuTree() {
         Map<String, List<Menu>> menuTree = new HashMap<>();
         List<Menu> allMenus = menuMapper.getAllMenus();
         List<Role> userRoles = UserUtils.getCurrentUser().getRoles();
 
-        for (Menu menu : allMenus) {
+        /*for (Menu menu : allMenus) {
             if (menu.getParentMenuId().equals(0L) && containRoles(userRoles,
                     menuRoleMapper.getRolesByMenuId(menu.getMenuId()))) {
                 List<Menu> children = new ArrayList<>();
@@ -60,9 +61,40 @@ public class MenuServiceImpl implements MenuService {
                 }
                 menuTree.put(menu.getMenuName(), children);
             }
-        }
+        }*/
 
         return menuTree;
+    }
+
+    @Override
+    public List<Menu> getMenuTree2() {
+        //所有菜单
+        List<Menu> allMenus = menuMapper.getAllMenus();
+        //用户权限
+        List<Role> userRoles = UserUtils.getCurrentUser().getRoles();
+
+        //容器
+        List<Menu> menuList=new ArrayList<>();
+        //遍历所有菜单
+        for (Menu menu : allMenus) {
+            //是否是合法的一级菜单
+            if (menu.getParentMenuId().equals(0L) && containRoles(userRoles,
+                    menuRoleMapper.getRolesByMenuId(menu.getMenuId()))) {
+                //创建子级菜单
+                List<Menu> children = new ArrayList<>();
+                for (Menu child : allMenus) {
+                    //是否是合法的从属自己菜单
+                    if (child.getParentMenuId().equals(menu.getMenuId()) && containRoles(userRoles,
+                            menuRoleMapper.getRolesByMenuId(child.getMenuId()))) {
+                        children.add(child);
+                    }
+                }
+                menu.setChildren(children);
+                //容器
+                menuList.add(menu);
+            }
+        }
+        return menuList;
     }
 
     @Override

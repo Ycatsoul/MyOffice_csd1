@@ -20,6 +20,7 @@ import com.capgemini.cn.demo.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,7 +51,13 @@ public class ManualSignServiceImpl implements ManualSignService {
 
     @Override
     public RespVos<ManualSignVo> getManualSign(Long manualSignId) {
-        return null;
+        RespVos<ManualSignVo> respVos=new RespVos<>();
+        ManualSign manualSign= manualSignMapper.getManualSign(manualSignId);
+        List<ManualSignVo> list=new ArrayList<>();
+        list.add(convertToVo(manualSign));
+        respVos.setVos(list);
+        respVos.setSize(1);
+        return respVos;
     }
 
     @Override

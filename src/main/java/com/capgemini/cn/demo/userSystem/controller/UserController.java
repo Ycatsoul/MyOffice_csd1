@@ -119,4 +119,5 @@ public class UserController extends BaseController {
         }
         return RespBean.error("上传头像错误");
     }
+
 }
