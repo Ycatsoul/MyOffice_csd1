@@ -17,5 +17,7 @@ public interface MenuService {
 
     Map<String, List<Menu>> getMenuTree();
 
+    List<Menu> getMenuTree2();
+
     List<Menu> getAllMenus();
 }

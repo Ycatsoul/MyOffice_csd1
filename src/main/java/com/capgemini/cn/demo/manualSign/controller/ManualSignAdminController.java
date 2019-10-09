@@ -32,7 +32,6 @@ public class ManualSignAdminController {
     @GetMapping("/{manualSignId}")
     public RespBean getManualSign(@PathVariable Long manualSignId){
         RespVos<ManualSignVo> respVos = manualSignService.getManualSign(manualSignId);
-
         if (respVos != null && respVos.getSize() > 0) {
             return RespBean.ok("查询成功",respVos);
         }
