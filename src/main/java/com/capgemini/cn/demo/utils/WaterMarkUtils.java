@@ -34,6 +34,7 @@ public class WaterMarkUtils {
             g.setFont(font);              //设置字体
 
             //设置水印的坐标
+
             int x = srcImgWidth - getWatermarkLength(waterMarkContent, g)-20;
             int y = srcImgHeight-100;
             g.drawString(waterMarkContent, x, y);  //画出水印

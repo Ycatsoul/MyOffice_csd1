@@ -1,0 +1,15 @@
+
+# ----------------------------------------
+# CORE PROPERTIES
+# ----------------------------------------
+spring:
+  application:
+    name: cg-spring-boot-demo
+
+# ----------------------------------------
+# PROFILES PROPERTIES
+# ----------------------------------------
+---
+spring:
+  # PROFILES
+  profiles: local

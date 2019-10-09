@@ -10,12 +10,15 @@ import com.capgemini.cn.demo.userSystem.vo.request.UserEditVo;
 import com.capgemini.cn.demo.userSystem.vo.request.UserSearchVo;
 import com.capgemini.cn.demo.userSystem.vo.response.BraDepUserVo;
 import com.capgemini.cn.demo.userSystem.vo.response.UserVo;
+import com.capgemini.cn.demo.utils.IdToBeJson;
+import com.capgemini.cn.demo.utils.WaterMarkUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 
 /**
  * @author hasaker
@@ -27,9 +30,15 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/user")
 public class UserController extends BaseController {
-
+    private long g =0L;
     @Autowired
     UserService userService;
+
+    @ApiOperation("为了让我知道是在修改谁")
+    @PostMapping("/forGiveMeUserId")
+    public void UsforGiveMeUserIder(@Valid @RequestBody IdToBeJson idToBeJson) {
+        g = idToBeJson.getId();
+    }
 
     @ApiOperation("查询用户")
     @GetMapping("/{userId}")
@@ -51,7 +60,6 @@ public class UserController extends BaseController {
         if (respVos != null && respVos.getSize() > 0) {
             return RespBean.ok("查询成功!", respVos);
         }
-
         return RespBean.error("查询失败！");
     }
 
