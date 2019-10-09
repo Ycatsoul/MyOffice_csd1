@@ -1,8 +1,8 @@
 package com.capgemini.cn.demo.userSystem.mapper;
 
+import com.capgemini.cn.demo.manualSign.vo.request.ManualSignEditVo;
+import com.capgemini.cn.demo.manualSign.vo.request.ManualSignSearchVo;
 import com.capgemini.cn.demo.userSystem.entity.ManualSign;
-import com.capgemini.cn.demo.userSystem.vo.request.ManualSignEditVo;
-import com.capgemini.cn.demo.userSystem.vo.request.ManualSignSearchVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

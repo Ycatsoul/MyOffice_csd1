@@ -49,11 +49,11 @@ public class MenuServiceImpl implements MenuService {
         List<Role> userRoles = UserUtils.getCurrentUser().getRoles();
 
         for (Menu menu : allMenus) {
-            if (menu.getParentMenuId().equals(0L) && containRoles(userRoles,
-                    menuRoleMapper.getRolesByMenuId(menu.getMenuId()))) {
-                List<Menu> children = new ArrayList<>();
-                for (Menu child : allMenus) {
-                    if (child.getParentMenuId().equals(menu.getMenuId()) && containRoles(userRoles,
+                        if (menu.getParentMenuId().equals(0L) && containRoles(userRoles,
+                                menuRoleMapper.getRolesByMenuId(menu.getMenuId()))) {
+                            List<Menu> children = new ArrayList<>();
+                            for (Menu child : allMenus) {
+                                if (child.getParentMenuId().equals(menu.getMenuId()) && containRoles(userRoles,
                             menuRoleMapper.getRolesByMenuId(child.getMenuId()))) {
                         children.add(child);
                     }

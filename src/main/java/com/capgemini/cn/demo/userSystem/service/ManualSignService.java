@@ -2,8 +2,8 @@ package com.capgemini.cn.demo.userSystem.service;
 
 import com.capgemini.cn.demo.baseVo.DeleteVo;
 import com.capgemini.cn.demo.baseVo.RespVos;
-import com.capgemini.cn.demo.userSystem.vo.request.ManualSignEditVo;
-import com.capgemini.cn.demo.userSystem.vo.request.ManualSignSearchVo;
+import com.capgemini.cn.demo.manualSign.vo.request.ManualSignEditVo;
+import com.capgemini.cn.demo.manualSign.vo.request.ManualSignSearchVo;
 import com.capgemini.cn.demo.userSystem.vo.response.ManualSignVo;
 import org.springframework.stereotype.Service;
 
