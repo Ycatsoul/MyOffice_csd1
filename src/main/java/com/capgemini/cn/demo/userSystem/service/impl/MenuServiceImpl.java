@@ -90,8 +90,10 @@ public class MenuServiceImpl implements MenuService {
                     }
                 }
                 menu.setChildren(children);
+
                 //容器
                 menuList.add(menu);
+
             }
         }
         return menuList;
