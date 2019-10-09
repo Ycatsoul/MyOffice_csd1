@@ -179,13 +179,13 @@
     <select id="selectBranchList" resultType="com.capgemini.cn.demo.messagePassing.vo.response.BranchResp"
                                   parameterType="com.capgemini.cn.demo.messagePassing.vo.request.BranchDepReq">
         select branchId, branchName
-        from branchinfo
+        from branch
     </select>
 
     <select id="selectDepartList" resultType="com.capgemini.cn.demo.messagePassing.vo.response.DepartResp"
                                   parameterType="com.capgemini.cn.demo.messagePassing.vo.request.BranchDepReq">
         select a.departId, a.departName, b.branchName
-        from departinfo a, branchinfo b
+        from depart a, branch b
         where a.branchId = b.branchId
     </select>
 
@@ -198,27 +198,27 @@
     <select id="selectDepartListByBranch" resultType="com.capgemini.cn.demo.messagePassing.vo.response.DepartResp"
                                           parameterType="Long">
         select departId, departName
-        from departInfo
+        from depart
         where branchId = #{userReq.branchId}
     </select>
     <!--通过机构ID查找机构名-->
     <select id="getBranchNameById" resultType="Long" parameterType="String">
         select branchId
-        from branchinfo
+        from branch
         where branchName = #{userReq.branchName}
     </select>
 
     <select id="selectUserListByDep" resultType="com.capgemini.cn.demo.messagePassing.vo.response.UserResp"
                                      parameterType="String">
         select name
-        from user a, departinfo b
+        from user a, depart b
         where b.departName = #{departName} and a.userId = b.principalUser
     </select>
 
     <select id="selectUserByName" resultType="com.capgemini.cn.demo.messagePassing.vo.response.UserResp"
                                   parameterType="com.capgemini.cn.demo.messagePassing.vo.request.UserReq">
         select name
-        from user a, departinfo b
+        from user a, depart b
         where a.userId = b.principalUser and b.departName = #{userReq.departName}
             and name like concat('%',#{userReq.name,jdbcType=VARCHAR},'%')
     </select>
@@ -227,7 +227,7 @@
     <select id="selectUsersByBranchId" resultType="com.capgemini.cn.demo.messagePassing.vo.response.UserResp"
                                        parameterType="Long">
         select name
-        from departinfo a, branchinfo b, user c
+        from depart a, branch b, user c
         where a.branchId = b.branchId and c.userId = a.principalUser and b.branchId = #{branchId}
     </select>
 
