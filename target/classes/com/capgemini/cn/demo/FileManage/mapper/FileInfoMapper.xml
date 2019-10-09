@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.capgemini.cn.demo.fileManage.mapper.FileInfoMapper">
+  
+  <!-- 搜索字段 -->
+  <sql id="searchFields">
+    <if test="fileInfoSearchVo.fileName != null">
+      AND fileName LIKE concat(concat('%', #{fileInfoSearchVo.fileName}), '%')
+    </if>
+    <if test="fileInfoSearchVo.createUserName != null">
+      AND fileOwner IN (
+        SELECT userId
+        FROM User
+        WHERE userName LIKE concat(concat('%', #{fileInfoSearchVo.createUserName}), '%')
+      )
+    </if>
+    <if test="fileInfoSearchVo.parentId != null">
+      AND parentId = #{fileInfoSearchVo.parentId}
+    </if>
+    <if test="fileInfoSearchVo.startTime != null and fileInfoSearchVo.endTime != null">
+      AND createDate BETWEEN #{fileInfoSearchVo.startTime} AND #{fileInfoSearchVo.endTime}
+    </if>
+  </sql>
+
+  <select id="searchFile"
+          parameterType="com.capgemini.cn.demo.fileManage.vo.repuest.FileInfoSearchVo"
+          resultType="com.capgemini.cn.demo.fileManage.entity.FileInfo">
+    SELECT *
+    FROM FileInfo
+    WHERE ifDelete = 0 <include refid="searchFields" />
+    ORDER BY createDate
+    LIMIT #{fileInfoSearchVo.start}, #{fileInfoSearchVo.size}
+  </select>
+</mapper>

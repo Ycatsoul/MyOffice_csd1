@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capgemini.cn.demo.messagePassing.mapper.MailBoxMapper">
+
+    <select id="countMessage" parameterType="com.capgemini.cn.demo.messagePassing.vo.request.MessageCountReq"
+                              resultType="Long">
+        select count(*)
+        from messagetouser
+        where touserId = #{messageCountReq.operationId}
+    </select>
+
+    <select id="countNoRead" parameterType="com.capgemini.cn.demo.messagePassing.vo.request.MessageCountReq"
+                             resultType="Long">
+        select count(*)
+        from messagetouser
+        where touserId = #{messageCountReq.operationId}
+        and messagetouser.ifRead = 0
+    </select>
+
+    <select id="countAlreadyPublish" parameterType="com.capgemini.cn.demo.messagePassing.vo.request.MessageCountReq"
+                                     resultType="Long">
+        select count(*)
+        from message
+        where fromUserId=#{messageCountReq.operationId}
+        and message.ifPublish = 1
+    </select>
+
+    <select id="listMail" parameterType="com.capgemini.cn.demo.messagePassing.vo.request.MessageCountReq"
+                          resultType="com.capgemini.cn.demo.messagePassing.dto.MailBoxDTO">
+        select b.id, b.messageId, a.title, a.recordTime, a.content, c.messageTypeName, a.fromUserId, d.name, b.ifRead
+        from message a , messagetouser b, messagetype c, user d
+        where b.toUserId = #{messageCountReq.operationId} and a.messageId = b.messageId and a.type = c.messageTypeId
+            and a.fromUserId = d.userId and a.ifDelete = 0
+    </select>
+
+    <select id="listAlreadySend" parameterType="com.capgemini.cn.demo.messagePassing.vo.request.MessageCountReq"
+                                 resultType="com.capgemini.cn.demo.messagePassing.dto.MailBoxDTO">
+        select b.messageId, a.title, a.recordTime, a.content, c.messageTypeName, a.fromUserId, d.name, d.username, b.ifRead,a.ifAll
+        from message a , messagetouser b, messagetype c, user d
+        where b.toUserId = #{messageCountReq.operationId} and a.messageId = b.messageId and a.type = c.messageTypeId
+            and a.fromUserId = d.userId and a.ifPublish = 1 and a.ifDelete = 0 and b.touserId = d.userId
+    </select>
+
+    <update id="updateRead" parameterType="com.capgemini.cn.demo.messagePassing.dto.MailBoxDTO">
+        update messagetouser
+        <set>
+            ifRead = 1
+        </set>
+        WHERE id = #{mailBoxDTO.id}
+    </update>
+</mapper>

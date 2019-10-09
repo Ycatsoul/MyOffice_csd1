@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capgemini.cn.demo.userSystem.mapper.BranchInfoMapper">
+	<select id="selectAllBranchInfo" resultType="com.capgemini.cn.demo.userSystem.entity.BranchInfo">
+		select * from branchinfo
+	</select>
+	
+	<insert id="insertBranchInfo">
+		insert into branchinfo(branchName,branchShortName) values(#{branchName},#{branchShortName})
+	</insert>
+	
+	<update id="updateBranchInfo">
+		update branchinfo set branchName=#{branchName},branchShortName=#{branchShortName} where branchId=#{branchId}
+	</update>
+	<delete id="deleteBranchInfoById">
+		delete from branchinfo where branchId=#{id}
+	</delete>
+	<select id="selectBranchInfoIdByName" resultType="Integer">
+		select branchid from branchinfo where branchName=#{name}
+	</select>
+	
+	
+</mapper>
