@@ -76,6 +76,7 @@ public class ManualSignServiceImpl implements ManualSignService {
     }
 
 /*添加签到信息*/
+    
 @Override
 public ManualSignVo addManualSign(ManualSignEditVo manualSignEditVo) {
     manualSignEditVo.setManualSignId(IdWorker.get().nextId());
