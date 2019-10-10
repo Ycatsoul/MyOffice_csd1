@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="coe-spring-boot-demo" target="1.5" />
+      <module name="coe-spring-boot-demo" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
