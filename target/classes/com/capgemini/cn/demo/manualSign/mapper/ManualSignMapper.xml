@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capgemini.cn.demo.manualSign.mapper.ManualSignMapper">
+
+    <!-- 搜索字段 -->
+    <sql id="search">
+        <if test="manualSignSearchVo.userId != null">
+            AND userId = #{manualSignSearchVo.userId}
+        </if>
+        <if test="manualSignSearchVo.departmentId != null">
+            AND userId IN (
+            SELECT userId FROM User WHERE departmentId = #{manualSignSearchVo.departmentId}
+            )
+        </if>
+        <if test="manualSignSearchVo.branchId != null and manualSignSearchVo.departmentId == null">
+            AND userId IN (
+            SELECT userId FROM User WHERE departmentId IN (
+            SELECT departmentId FROM Department WHERE branchId = = #{manualSignSearchVo.branchId}
+            )
+            )
+        </if>
+        <if test="manualSignSearchVo.name != null">
+            AND userId IN (
+            SELECT userId FROM User WHERE name LIKE concat(concat('%', #{manualSignSearchVo.name}), '%')
+            )
+        </if>
+        <if test="manualSignSearchVo.startTime != null and manualSignSearchVo.endTime != null">
+            AND signTime BETWEEN #{manualSignSearchVo.startTime} AND #{manualSignSearchVo.endTime}
+        </if>
+    </sql>
+
+    <!-- 根据manualSignId获取ManualSign -->
+    <select id="getManualSign" resultType="com.capgemini.cn.demo.manualSign.entity.ManualSign">
+        SELECT * FROM ManualSign WHERE manualSignId = #{manualSignId}
+    </select>
+
+    <!-- 获取ManualSign列表 -->
+    <select id="listManualSigns"
+            parameterType="com.capgemini.cn.demo.manualSign.vo.request.ManualSignSearchVo"
+            resultType="com.capgemini.cn.demo.manualSign.entity.ManualSign">
+        SELECT *
+        FROM ManualSign
+        <where><include refid="search" /></where>
+        LIMIT #{manualSignSearchVo.start}, #{manualSignSearchVo.size}
+    </select>
+
+    <!-- 统计ManualSign列表长度 -->
+    <select id="countManualSigns"
+            resultType="INTEGER"
+            parameterType="com.capgemini.cn.demo.manualSign.vo.request.ManualSignSearchVo">
+        SELECT count(1)
+        FROM ManualSign
+        <where><include refid="search" /></where>
+    </select>
+
+
+    <!-- 插入一条ManualSign记录 -->
+    <insert id="insertManualSign" parameterType="com.capgemini.cn.demo.manualSign.vo.request.ManualSignEditVo">
+        INSERT INTO ManualSign
+            (
+             manualSignId,
+             userId,
+             signTime,
+             signDesc,
+             signTag
+            )
+        VALUES
+            (
+             #{manualSignEditVo.manualSignId},
+             #{manualSignEditVo.userId},
+             #{manualSignEditVo.signTime},
+             #{manualSignEditVo.signDesc},
+             #{manualSignEditVo.signTag}
+            )
+    </insert>
+
+    <!-- 更新一条ManualSign记录 -->
+    <update id="updateManualSign" parameterType="com.capgemini.cn.demo.manualSign.vo.request.ManualSignEditVo">
+        UPDATE ManualSign
+        SET userId = #{manualSignEditVo.userId},
+            signDesc = #{manualSignEditVo.signDesc},
+            signTag = #{manualSignEditVo.signTag}
+        WHERE manualSignId = #{manualSignEditVo.manualSignId}
+    </update>
+
+    <!-- 根据manualSignId删除ManualSign -->
+    <delete id="deleteManualSigns" parameterType="java.util.List">
+        DELETE FROM ManualSign where manualSignId IN
+        <foreach collection="manualSignIds" item="manualSignId" separator="," open="(" close=")">
+            #{manualSignId}
+        </foreach>
+    </delete>
+
+</mapper>
