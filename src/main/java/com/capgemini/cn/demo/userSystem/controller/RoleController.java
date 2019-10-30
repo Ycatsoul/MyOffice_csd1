@@ -61,7 +61,7 @@ public class RoleController {
 
     @ControllerLog(name = "编辑角色")
     @ApiOperation("编辑角色")
-    @PutMapping("/")
+    @PutMapping("/update")
     public RespBean updateRole(@RequestBody RoleEditVo roleEditVo) {
         Integer res = roleService.updateRole(roleEditVo);
 
